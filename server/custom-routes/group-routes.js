@@ -3,7 +3,10 @@ let Users = require('../models.user');
 let Chats = require('../models.chat');
 
 export default {
-
+    gameLists: {
+        path: '/',
+        reqTpe: 'get'
+    }
 }
 
 function handleResponse(action, data, error){
