@@ -1,12 +1,12 @@
  // LOCAL DEV VARIBLES
 let env = {
     NODE_ENV: 'development',
-    PORT: 3001,
+    PORT: 3000,
     DBPROTOCOL: 'mongodb',
-    DBUSERNAME: '',
-    DBPASSWORD: '',
-    DBHOST: '',
-    DBNAME: '',
+    DBUSERNAME: 'steam',
+    DBPASSWORD: 'lets-get-steamy',
+    DBHOST: 'ds058369.mlab.com',
+    DBNAME: 'steamy',
     SERVERNAME: 'dev-server'
 }
 
