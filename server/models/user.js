@@ -10,8 +10,8 @@ let schema = new Schema({
     username: { type: String, required: true, unique: true, uniqueCaseInsensitive: true },
     password: { type: String, required: true },
     steamdId: { type: String },
-    games: [{ type: Object }],
-    invites: [{ type: Object }],
+    games: { type: Array },
+    invites: [{ type: Schema.Types.Mixed }],
     // Relations
     friends: [{ type: ObjectId, ref: models.user.name }],
     chats: [{ type: ObjectId, ref: models.chat.name }],
