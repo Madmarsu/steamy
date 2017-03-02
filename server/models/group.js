@@ -7,10 +7,12 @@ const SALT_FACTOR = 10;
 import { models } from '../config/constants'
 
 let schema = new Schema({
-    groupTitle: { type: String, required: true },
+    title: { type: String, required: true },
     description: {type: String},
     game: { type: String },
     // Relations
-    players: [{ type: ObjectId, ref:models.user }]
+    players: [{ type: ObjectId, ref: models.user.name }]
     
 })
+
+module.exports = mongoose.model(models.group.name, schema)

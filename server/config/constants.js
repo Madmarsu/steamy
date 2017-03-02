@@ -7,7 +7,14 @@ const actions = {
 }
 
 const models = {
- 
+  user: {
+    name: 'User',
+    endpoint: 'users'
+  },
+  group: {
+    name: 'Group',
+    endpoint: 'groups'
+  }
 }
 
 
