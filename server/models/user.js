@@ -14,6 +14,7 @@ let schema = new Schema({
     invites: [{ type: Object }],
     // Relations
     friends: [{ type: ObjectId, ref: models.user.name }],
+    chats: [{ type: ObjectId, ref: models.chat.name }],
     groups: [{ type: ObjectId, ref: models.group.name }]
 })
 
