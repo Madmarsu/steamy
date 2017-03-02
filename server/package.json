@@ -22,6 +22,7 @@
     "express-session": "^1.15.1",
     "mongoose": "^4.8.5",
     "mongoose-unique-validator": "^1.0.4",
+    "passport": "^0.3.2",
     "socket.io": "^1.7.3"
   },
   "engines": {
