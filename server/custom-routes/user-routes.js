@@ -19,7 +19,7 @@ export default {
         reqType: 'put',
         method(req, res, next){
             let action = 'Accept invite'
-            Users.findById(req.sessions.uid)
+            Users.findById(req.session.uid)
             .then(user=>{
                 user.friends.push(req.body.userId)
                 let index = user.invites.indexOf(req.body)
@@ -29,6 +29,41 @@ export default {
                 .then(friendUser =>{
                     friendUser.friends.push(req.session.uid)
                     friendUser.save()
+                })
+            })
+            .catch(error=>{
+                return next(handleResponse(action, null, error))
+            })
+        }
+    },
+    declineInvite: {
+        path: '/invite/decline',
+        reqType: 'put',
+        method(req, res, next){
+            let action = 'Decline invite'
+            Users.findById(req.session.uid)
+            .then(user=>{
+                let index = user.invites.indexOf(req.body)
+                user.invites.splice(index, 1)
+            })
+            .catch(error=>{
+                return next(handleResponse(action, null, error))
+            })
+        }
+    },
+    addToGroup: {
+        path: 'profile/:id/groupadd',
+        reqType: 'put',
+        method(req, res, next){
+            let action = 'Add to group'
+            Users.findById(req.params.id)
+            .then(user =>{
+                user.groups.push(req.body.groupId)
+                user.save()
+                Groups.findById(req.body.groupId)
+                .then(group=>{
+                    group.members.push(req.params.id)
+                    group.save()
                 })
             })
             .catch(error=>{
