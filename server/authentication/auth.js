@@ -87,6 +87,9 @@ router.get('/authenticate/steam',
 app.get('/authenticate/steam/return',
   passport.authenticate('steam', { failureRedirect: '/' }),
   function (req, res) {
+    console.log(req.session.uid)
+    console.log("SESSION", req.session)
+    Users.findByIdAndUpdate(req.session.uid, {$set: { steamId: req.session.steamId } })
     console.log("session",req.session)
     res.redirect('/');
   });
