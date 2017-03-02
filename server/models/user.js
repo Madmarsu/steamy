@@ -9,6 +9,7 @@ import { models } from '../config/constants'
 let schema = new Schema({
     username: { type: String, required: true, unique: true, uniqueCaseInsensitive: true },
     password: { type: String, required: true },
+    bio: { type: String },
     steamdId: { type: String },
     games: { type: Array },
     invites: [{ type: Schema.Types.Mixed }],
@@ -17,6 +18,8 @@ let schema = new Schema({
     chats: [{ type: ObjectId, ref: models.chat.name }],
     groups: [{ type: ObjectId, ref: models.group.name }]
 })
+
+schema.plugin(uniqueValidator);
 
 schema.pre('save', function(next){
     var user = this;

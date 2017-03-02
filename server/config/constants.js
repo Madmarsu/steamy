@@ -9,15 +9,18 @@ const actions = {
 const models = {
   user: {
     name: 'User',
-    endpoint: 'users'
+    endpoint: 'users',
+    useCustomRoutes: true
   },
   group: {
     name: 'Group',
-    endpoint: 'groups'
+    endpoint: 'groups',
+    useCustomRoutes: true
   },
   chat: {
     name: 'Chat',
-    endpoint: 'chats'
+    endpoint: 'chats',
+    useCustomRoutes: true
   }
 }
 
