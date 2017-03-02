@@ -14,6 +14,10 @@ const models = {
   group: {
     name: 'Group',
     endpoint: 'groups'
+  },
+  chat: {
+    name: 'Chat',
+    endpoint: 'chats'
   }
 }
 
