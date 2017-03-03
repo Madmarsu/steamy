@@ -12,6 +12,7 @@ let schema = new Schema({
     bio: { type: String },
     steamdId: { type: String },
     games: { type: Array },
+    avatar: { type: String },
     invites: [{ type: Schema.Types.Mixed }],
     // Relations
     friends: [{ type: ObjectId, ref: models.user.name }],
