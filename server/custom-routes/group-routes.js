@@ -16,11 +16,40 @@ export default {
                 return next(handleResponse(action, null, error))
             })
         }
+     },
+    findGroupByGame: {
+        path: '/group/findbygame',
+        reqType: 'post',
+        method(req, res, next){
+            let action = 'Find groups by game'
+            Groups.find({game:req.body.appid}) 
+            .then(groups=>{
+                let sortedGroups = groups.sort(function(a, b){
+                    return b.members.length - a.members.length
+                })
+                res.send(handleResponse(action, sortedGroups)) 
+            })
+            .catch(error=>{
+                return next(handleResponse(action, null, error))
+            })
+            }
     },
-    deleteGroup: {
-        path: '/group/remove',
-        reqType: 'delete',
-        method: ''
+    findGroupByTitle: {
+        path: '/group/findbytitle',
+        reqType: 'post',
+        method(req, res, next){
+            let action = 'Find groups by title'
+            Groups.find({title:req.body.title})
+            .then(groups=>{
+                let sortedGroups = groups.sort(function(a, b){
+                    return b.members.length - a.members.length
+                })
+                res.send(handleResponse(action, sortedGroups))
+            })
+            .catch(error=>{
+                return next(handleResponse(action, null, error))
+            })
+        }
     }
 }
 
