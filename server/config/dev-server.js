@@ -4,9 +4,10 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import { defaultErrorHandler, corsOptions } from './handlers'
 import api from '../models'
+import Users from "../models/user.js"
 import session from '../authentication/sessions'
 import Auth from '../authentication/auth'
-
+import passport from "passport"
 import SteamStrategy from "../lib/passport-steam"
 
 // ENABLE ROUTES IF USING app SIDE ROUTING
@@ -35,12 +36,16 @@ function logger(req, res, next) {
 //   the user by ID when deserializing.  However, since this example does not
 //   have a database of user records, the complete Steam profile is serialized
 //   and deserialized.
-passport.serializeUser(function(user, done) {
-  done(null, user);
+passport.serializeUser(function (user, done) {
+    console.log("user", user)
+  done(null, user.id);
 });
 
-passport.deserializeUser(function(obj, done) {
-  done(null, obj);
+passport.deserializeUser(function (id, done) {
+    console.log("id", id)
+    Users.findOne({steamid: id}, function(err, user) {
+        done(err, user);
+    });
 });
 
 // Use the SteamStrategy within Passport.
@@ -48,11 +53,12 @@ passport.deserializeUser(function(obj, done) {
 //   credentials (in this case, an OpenID identifier and profile), and invoke a
 //   callback with a user object.
 passport.use(new SteamStrategy({
-    returnURL: 'http://localhost:3000/auth/steam/return',
+    returnURL: 'http://localhost:3000/authenticate/steam/return',
     realm: 'http://localhost:3000/',
-    apiKey: '99B125DE809E1AA62AA914DB59F3B21F'
+    apiKey: '99B125DE809E1AA62AA914DB59F3B21F',
+    passReqToCallback: true
   },
-  function(identifier, profile, done) {
+  function(req, identifier, profile, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
 
@@ -60,8 +66,9 @@ passport.use(new SteamStrategy({
       // represent the logged-in user.  In a typical application, you would want
       // to associate the Steam account with a user record in your database,
       // and return that user instead.
-      profile.identifier = identifier;
-      console.log(profile)
+        profile.identifier = identifier;
+      console.log("req", req.session)  
+      console.log("profile", profile)
       return done(null, profile);
     });
   }
