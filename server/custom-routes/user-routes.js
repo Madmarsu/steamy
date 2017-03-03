@@ -75,6 +75,20 @@ export default {
                 return next(handleResponse(action, null, error))
             })
         }
+    },
+    updateBio: {
+        path: 'myprofile/update',
+        reqType: 'put',
+        method(req, res, next){
+            let action = 'Update bio'
+            Users.findByIdAndUpdate(req.session.uid, {$set: {bio: req.body.bio}})
+            .then(user =>{
+                res.send(action, user)
+            })
+            .catch(error=>{
+                return next(handleResponse(action, null, error))
+            })
+        }
     }
 }
 

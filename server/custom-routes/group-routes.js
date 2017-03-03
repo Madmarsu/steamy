@@ -3,9 +3,24 @@ let Users = require('../models.user');
 let Chats = require('../models.chat');
 
 export default {
-    gameLists: {
-        path: '/',
-        reqTpe: 'get'
+    createGroup: {
+        path: '/group/create',
+        reqType: 'post', 
+        method(req, res, next){
+            let action = 'Create group'
+            Groups.create(req.body)
+            .then(group=>{
+                res.send(handleResponse(action, group))
+            })
+            .catch(error=>{
+                return next(handleResponse(action, null, error))
+            })
+        }
+    },
+    deleteGroup: {
+        path: '/group/remove',
+        reqType: 'delete',
+        method: ''
     }
 }
 
