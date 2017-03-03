@@ -8,8 +8,7 @@ import CreateGroup from '../components/CreateGroup'
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
+  routes: [{
       path: '/',
       name: 'Home',
       component: Home
