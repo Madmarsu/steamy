@@ -56,7 +56,7 @@ export default {
         }
     },
     addToGroup: {
-        path: 'profile/:id/groupadd',
+        path: '/profile/:id/groupadd',
         reqType: 'put',
         method(req, res, next){
             let action = 'Add to group'
@@ -77,13 +77,27 @@ export default {
         }
     },
     updateBio: {
-        path: 'myprofile/update',
+        path: '/myprofile/update',
         reqType: 'put',
         method(req, res, next){
             let action = 'Update bio'
             Users.findByIdAndUpdate(req.session.uid, {$set: {bio: req.body.bio}})
             .then(user =>{
                 res.send(action, user)
+            })
+            .catch(error=>{
+                return next(handleResponse(action, null, error))
+            })
+        }
+    },
+    findUserByGame: {
+        path: '/find/individual',
+        reqType: 'post',
+        method(req, res, next){
+            let action = 'Find individual by game'
+            Users.find({games:{ $in: [req.body.appid]}})
+            .then(user =>{
+                res.send(handleResponse(action, user))
             })
             .catch(error=>{
                 return next(handleResponse(action, null, error))
