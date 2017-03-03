@@ -8,7 +8,8 @@ import { models } from '../config/constants'
 
 let schema = new Schema({
     // Relations
-    players: [{ type: ObjectId, ref: models.user.name }]
+    members: [{ type: ObjectId, ref: models.user.name }],
+    chatHistory: [{ type: Schema.Types.Mixed }]
     
 })
 

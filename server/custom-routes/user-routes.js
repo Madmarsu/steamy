@@ -104,6 +104,48 @@ export default {
                 return next(handleResponse(action, null, error))
             })
         }
+    },
+    findUsersGroups: {
+        path: '/user/groups',
+        reqType: 'get',
+        method(req, res, next){
+            let action = 'Find groups user is in'
+            Groups.find({members: { $in: [req.session.uid]}})
+                .then(groups => {
+                    res.send(handleResponse(action, groups))
+                })
+                .catch(error => {
+                    return next(handleResponse(action, null, error))
+                })
+        }
+    },
+    findUsersChats: {
+        path: '/user/chats',
+        reqType: 'get',
+        method(req, res, next){
+            let action = 'Find chats user is in'
+            Chats.find({members: { $in: [req.session.uid] }})
+                .then(chats => {
+                    res.send(handleResponse(action, chats))
+                })
+                .catch(error => {
+                    return next(handleResponse(action, null, error))
+                })
+        }
+    },
+    viewProfile: {
+        path: '/profile/:id',
+        reqType: 'get',
+        method(req, res, next){
+            let action = 'Find another\'s profile'
+            Users.findById(req.params.id)
+                .then(user => {
+                    res.send(action, user)
+                })
+                .catch(error => {
+                    return next(handleResponse(action, null, error))
+                })
+        }
     }
 }
 

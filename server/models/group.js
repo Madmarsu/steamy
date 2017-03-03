@@ -12,7 +12,7 @@ let schema = new Schema({
     game: { type: String },
     chatHistory: [{ type: Schema.Types.Mixed }],
     // Relations
-    players: [{ type: ObjectId, ref: models.user.name }]
+    members: [{ type: ObjectId, ref: models.user.name }]
     
 })
 
