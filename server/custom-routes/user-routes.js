@@ -11,6 +11,7 @@ export default {
             Users.findById(req.params.id)
             .then(user=>{
                 user.invites.push(req.body)
+                res.send(handleResponse(action, { message: 'Successfully sent friend request', user: user }))
             })
         }
     },
@@ -29,6 +30,7 @@ export default {
                 .then(friendUser =>{
                     friendUser.friends.push(req.session.uid)
                     friendUser.save()
+                    res.send(handleResponse(action, user))
                 })
             })
             .catch(error=>{
@@ -45,6 +47,8 @@ export default {
             .then(user=>{
                 let index = user.invites.indexOf(req.body)
                 user.invites.splice(index, 1)
+                user.save()
+                res.send(handleResponse(action, user))
             })
             .catch(error=>{
                 return next(handleResponse(action, null, error))
@@ -64,6 +68,7 @@ export default {
                 .then(group=>{
                     group.members.push(req.params.id)
                     group.save()
+                    res.send(handleResponse(action, group))
                 })
             })
             .catch(error=>{
