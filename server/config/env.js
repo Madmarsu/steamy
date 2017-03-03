@@ -3,9 +3,9 @@ let env = {
     NODE_ENV: 'development',
     PORT: 3000,
     DBPROTOCOL: 'mongodb',
-    DBUSERNAME: 'steam',
-    DBPASSWORD: 'lets-get-steamy',
-    DBHOST: 'ds058369.mlab.com',
+    DBUSERNAME: 'gosteam',
+    DBPASSWORD: 'password123',
+    DBHOST: 'ds058369.mlab.com:58369',
     DBNAME: 'steamy',
     SERVERNAME: 'dev-server'
 }
