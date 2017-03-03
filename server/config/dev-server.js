@@ -1,4 +1,5 @@
 import env from './env'
+import { steam } from "./constants"
 import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
@@ -7,8 +8,10 @@ import api from '../models'
 import Users from "../models/user.js"
 import session from '../authentication/sessions'
 import Auth from '../authentication/auth'
+import Steam from '../authentication/steam'
 import passport from "passport"
 import SteamStrategy from "../lib/passport-steam"
+import axios from "axios"
 
 // ENABLE ROUTES IF USING app SIDE ROUTING
 // import routes from './routes'
@@ -17,8 +20,12 @@ let app = express()
 let server = require('http').createServer(app);
 
 function Validate(req, res, next) {
-    // ONLY ALLOW GET METHOD IF NOT LOGGED IN 
-    if (req.method !== 'GET' && !req.session.uid) {
+    // BLOCK STEAM ROUTES IF ALREADY LINKED
+    if (req.url.includes("steam/auth") && req.session.passport.user && req.session.passport.user.steamId){
+        return res.send({ error: 'Your steamId ('+ req.session.passport.user.steamId+") has already been linked to your profile." })
+    }
+    // ONLY ALLOW ANY METHOD IF LOGGED IN (Not Auth routes)
+    if (!req.session.uid) {
         return res.send({ error: 'Please Login or Register to continue' })
     }
     return next()
@@ -37,13 +44,11 @@ function logger(req, res, next) {
 //   have a database of user records, the complete Steam profile is serialized
 //   and deserialized.
 passport.serializeUser(function (user, done) {
-    console.log("user", user)
-  done(null, user.id);
+  done(null, {_id: user._id, steamId: user.steamId});
 });
 
-passport.deserializeUser(function (id, done) {
-    console.log("id", id)
-    Users.findOne({steamid: id}, function(err, user) {
+passport.deserializeUser(function (obj, done) {
+    Users.findById(obj._id, function(err, user) {
         done(err, user);
     });
 });
@@ -52,25 +57,32 @@ passport.deserializeUser(function (id, done) {
 //   Strategies in passport require a `validate` function, which accept
 //   credentials (in this case, an OpenID identifier and profile), and invoke a
 //   callback with a user object.
+let steamApi = axios.create({
+  baseURL: 'http://api.steampowered.com/IPlayerService/',
+  timeout: 3000,
+  withCredentials: true
+})
+
 passport.use(new SteamStrategy({
-    returnURL: 'http://localhost:3000/authenticate/steam/return',
-    realm: 'http://localhost:3000/',
-    apiKey: '99B125DE809E1AA62AA914DB59F3B21F',
+    returnURL: steam.returnURL,
+    realm: steam.realm,
+    apiKey: steam.apiKey,
     passReqToCallback: true
   },
-  function(req, identifier, profile, done) {
-    // asynchronous verification, for effect...
-    process.nextTick(function () {
-
-      // To keep the example simple, the user's Steam profile is returned to
-      // represent the logged-in user.  In a typical application, you would want
-      // to associate the Steam account with a user record in your database,
-      // and return that user instead.
-        profile.identifier = identifier;
-      console.log("req", req.session)  
-      console.log("profile", profile)
-      return done(null, profile);
-    });
+    function (req, identifier, profile, done) {
+     Users.findByIdAndUpdate(req.session.uid, {$set: { steamId: profile.id, avatar: profile._json.avatar } })
+         .then(user => {
+        steamApi('GetOwnedGames/v0001/?key=' + steam.apiKey + '&steamid=' + profile.id + '&include_played_free_games=1&include_appinfo=1&format=json')
+            .then(res => {
+            Users.findByIdAndUpdate(req.session.uid, {$set: { games: res.data.response.games }})
+                .then(user => {
+                done(null, user)  
+              })
+          })
+      })
+      .catch(err => {
+        done(err, false)  
+      })  
   }
 ));
 
@@ -88,6 +100,7 @@ app.use(Auth)
 
 // LOCKS API TO REQUIRE USER AUTH
 app.use(Validate)
+app.use(Steam)
 app.use('/api', api)
 app.use('/', defaultErrorHandler)
 

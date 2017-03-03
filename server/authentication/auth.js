@@ -1,13 +1,8 @@
 import axios from 'axios'
-
+import passport from "passport"
 let router = require('express').Router()
 let Users = require('../models/user')
 
-let steamApi = axios.create({
-  baseURL: 'http://api.steampowered.com/IPlayerService/',
-  timeout: 3000,
-  withCredentials: true
-})
 
 let steamKey = '7B9839E0AACE2FABC3E69561417B07C8'
 
@@ -66,7 +61,12 @@ router.delete('/logout', (req, res) => {
 })
 
 
-router.get('/authenticate', (req,res) => {
+router.get('/authenticate', (req, res) => {
+  if (!req.session.uid) {
+    return res.send ({
+      error:"Please login or register to continue!" 
+    })
+  }
   Users.findById(req.session.uid).then(user => {
     return res.send ({
       data: user
@@ -78,42 +78,5 @@ router.get('/authenticate', (req,res) => {
   })
 })
 
-// GET /auth/steam
-//   Use passport.authenticate() as route middleware to authenticate the
-//   request.  The first step in Steam authentication will involve redirecting
-//   the user to steamcommunity.com.  After authenticating, Steam will redirect the
-//   user back to this application at /authenticate/steam/return
-router.get('/authenticate/steam',
-  passport.authenticate('steam', { failureRedirect: '/' }),
-  function(req, res) {
-    res.redirect('/');
-  });
-
-// GET /auth/steam/return
-//   Use passport.authenticate() as route middleware to authenticate the
-//   request.  If authentication fails, the user will be redirected back to the
-//   login page.  Otherwise, the primary route function function will be called,
-//   which, in this example, will redirect the user to the home page.
-router.get('/authenticate/steam/return',
-  passport.authenticate('steam', { failureRedirect: '/' }),
-  function (req, res) {
-    Users.findByIdAndUpdate(req.session.uid, {$set: { steamId: req.session.passport.user._id, avatar: req.session.passport.user.avatar } })
-      .then(user => {
-        steamApi('GetOwnedGames/v0001/?key=' + steamKey + '&steamid=' + user.steamId + '&include_played_free_games=1&include_appinfo=1&format=json')
-          .then(res => {
-            Users.findByIdAndUpdate(req.session.uid, {$set: { games: res.response.games }})
-              .then(user => {
-                res.send({
-                  data: user
-                })
-              })
-          })
-      })
-      .catch(err => {
-        res.send({
-          error: err
-        })
-      })
-  });
 
 module.exports = router
