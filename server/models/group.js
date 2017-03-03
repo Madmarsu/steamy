@@ -10,6 +10,7 @@ let schema = new Schema({
     title: { type: String, required: true },
     description: {type: String},
     game: { type: String },
+    chatHistory: [{ type: Schema.Types.Mixed }],
     // Relations
     players: [{ type: ObjectId, ref: models.user.name }]
     

@@ -10,7 +10,7 @@ let schema = new Schema({
     username: { type: String, required: true, unique: true, uniqueCaseInsensitive: true },
     password: { type: String, required: true },
     bio: { type: String },
-    steamdId: { type: String },
+    steamId: { type: String },
     games: { type: Array },
     avatar: { type: String },
     invites: [{ type: Schema.Types.Mixed }],

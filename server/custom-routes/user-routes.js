@@ -11,6 +11,7 @@ export default {
             Users.findById(req.params.id)
             .then(user=>{
                 user.invites.push(req.body)
+                user.save()
                 res.send(handleResponse(action, { message: 'Successfully sent friend request', user: user }))
             })
         }
