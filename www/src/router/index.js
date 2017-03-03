@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/components/Hello'
 import Home from '../components/Home'
-import ProfileRoutes from './profile'
+import CreateGroup from '../components/CreateGroup'
+//import ProfileRoutes from './profile'
 
 Vue.use(Router)
 
@@ -13,6 +14,11 @@ export default new Router({
       name: 'Home',
       component: Home
     },
-    ...ProfileRoutes
+    {
+      path: '/creategroup',
+      name: 'CreateGroup',
+      component: CreateGroup
+    }
+    //...ProfileRoutes
   ]
 })
