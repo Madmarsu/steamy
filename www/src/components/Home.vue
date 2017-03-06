@@ -1,5 +1,9 @@
 <template>
+    <div>
 <landing-page></landing-page>
+<router-view></router-view>
+
+    </div>
 
 </template>
 

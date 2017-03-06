@@ -16,8 +16,8 @@
                     <a href="#" class="brand-logo">Catchy Title</a>
                     <!-- v-if="!this.$root.$data.store.state.user._id" -->
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        <li><a @click="loginModal">Login</a></li>
-                        <li><a @click="signUpModal">Sign Up</a></li>
+                        <li><router-link to="login">Login</router-link></li>
+                        <li><router-link to="sign-up">Sign Up</router-link></li>
                     </ul>
                     <!-- if logged in
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -40,7 +40,7 @@
 
         <div id="signUpModal" class="modal">
             <div class="modal-content">
-                <h4>Login</h4>
+                <h4>Sign Up</h4>
                 <p>A bunch of text</p>
             </div>
             <div class="modal-footer">
@@ -56,20 +56,10 @@
     export default {
         name: 'Nav',
         methods: {
-            loginModal() {
-                $('#loginModal').modal('open');
-            },
-            signUpModal(){
-                $('#signUpModal').modal('open');
-            }
+            
         }
-
     }
     // $(".dropdown-button").dropdown();
-
-    $(document).ready(function () {
-        $('.modal').modal();
-    })
 
 </script>
 

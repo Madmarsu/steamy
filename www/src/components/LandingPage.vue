@@ -11,7 +11,7 @@
                     <p>blurb</p>
                 </div>
                 <div class="col s4">
-                    <h5><i class="fa fa-steam"></i> Import Your Library</h5>
+                    <h5><i class="fa fa-steam"></i> Import Your Library*</h5>
                     <p>Connect your Steam account to be able to import your library! It makes making connections a breeze.</p>
                 </div>
                 <div class="col s4">
@@ -19,9 +19,14 @@
                     <p>blurb</p>
                 </div>
             </div>
+            <div>
+                <sup>*Note that your Steam profile must be set to public for us to be able to query your owned games. You can set your profile back to private after we have linked your account.</sup>
+            </div>
         </div>
         <div class="parallax-container">
-            <div class="bgimg-2"></div>
+            <div class="bgimg-2 center">
+                <button class="sign-up waves-effect waves-indigo btn btn-large indigo hoverable raised">Sign Up Today</button>
+            </div>
         </div>
     </div>
 </template>
@@ -39,6 +44,9 @@
     }
 
 
+    .sign-up {
+        margin-top: 70px;
+    }
 
 
     .parallax {
@@ -56,6 +64,7 @@
 
 
 
+
     .bgimg-2 {
         background-image: url("http://unsplash.com/photos/CuFYW1c97w8/download?force=true");
         min-height: 100%;
@@ -67,11 +76,13 @@
 
 
 
+
     .section {
         padding-top: 20px;
         padding-bottom: 20px;
         color: white;
     }
+
 
 
 
