@@ -4,12 +4,12 @@ import Hello from '@/components/Hello'
 import Home from '../components/Home'
 import Login from '../components/login'
 // import ProfileRoutes from './profile'
+import CreateGroup from '../components/CreateGroup'
 
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
+  routes: [{
       path: '/',
       name: 'Home',
       component: Home,
@@ -24,7 +24,12 @@ export default new Router({
       //   component: SignUp
       // }
       ]
+    },
+    {
+      path: '/creategroup',
+      name: 'CreateGroup',
+      component: CreateGroup
     }
-   // ...ProfileRoutes
+    //...ProfileRoutes
   ]
 })
