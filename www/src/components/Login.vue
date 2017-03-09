@@ -2,7 +2,7 @@
     <div>
         <form id="loginModal" class="modal">
             <div class="modal-content">
-                <h4>Login</h4>
+                <h4 class="center">Login</h4>
                 <div class="row">
                     <div class="input-field col s6">
                         <input type="text" id="username" v-model="username">

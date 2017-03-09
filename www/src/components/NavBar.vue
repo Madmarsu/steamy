@@ -13,11 +13,15 @@
         <div class="navbar-fixed">
             <nav class="indigo darken-4">
                 <div class="nav-wrapper">
-                    <a href="#" class="brand-logo">Catchy Title</a>
+                    <a href="#" class="brand-logo">Multi Player</a>
                     <!-- v-if="!this.$root.$data.store.state.user._id" -->
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        <li><router-link to="login">Login</router-link></li>
-                        <li><router-link to="sign-up">Sign Up</router-link></li>
+                        <li>
+                            <router-link to="login">Login</router-link>
+                        </li>
+                        <li>
+                            <router-link to="sign-up">Sign Up</router-link>
+                        </li>
                     </ul>
                     <!-- if logged in
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -27,18 +31,6 @@
                 </div>
             </nav>
         </div>
-
-        <div id="signUpModal" class="modal">
-            <div class="modal-content">
-                <h4>Sign Up</h4>
-                <p>A bunch of text</p>
-            </div>
-            <div class="modal-footer">
-                <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
-            </div>
-        </div>
-
-
     </div>
 </template>
 
@@ -46,7 +38,7 @@
     export default {
         name: 'Nav',
         methods: {
-            
+
         }
     }
     // $(".dropdown-button").dropdown();
