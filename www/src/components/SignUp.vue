@@ -1,8 +1,8 @@
 <template>
     <div>
-        <form id="loginModal" class="modal">
+        <form id="signupModal" class="modal">
             <div class="modal-content">
-                <h4>Login</h4>
+                <h4>Sign Up</h4>
                 <div class="row">
                     <div class="input-field col s6">
                         <input type="text" id="username" v-model="username">
@@ -12,14 +12,18 @@
                         <input type="password" id="password" v-model="password">
                         <label for="password">Password</label>
                     </div>
+                    <div class="input-field col s6">
+                        <input type="password" id="confirmPass" v-model="confirmPass">
+                        <label for="confirmPass">Confirm Password</label>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <div class="left">
-                    <router-link to="/sign-up" class="waves-effect waves-teal btn-flat">Sign Up</router-link>
+                    <router-link to="/login" class="waves-effect waves-teal btn-flat">Login</router-link>
                 </div>
                 <div class="right">
-                    <button type="submit" class="waves-effect waves-indigo btn indigo right-align">Login</button>
+                    <button type="submit" class="waves-effect waves-indigo btn indigo right-align">Sign Up</button>
                 </div>
             </div>
         </form>
@@ -29,11 +33,12 @@
 
 <script>
     export default {
-        name: 'Login',
+        name: 'Sign-Up',
         data() {
             return {
                 username: '',
-                password: ''
+                password: '',
+                confirmPass: ''
             }
         },
         mounted(){
@@ -42,10 +47,10 @@
             var onModalHide = function(){
                 vue.$router.push({path: '/'});
             }
-            $('#loginModal').modal({
+            $('#signupModal').modal({
                 complete : onModalHide
             });
-            $('#loginModal').modal('open');
+            $('#signupModal').modal('open');
         }
     }
 
