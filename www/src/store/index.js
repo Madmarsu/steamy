@@ -14,6 +14,7 @@ let state = {
 
 let handleError = (err) => {
     state.error = err
+    console.log(err);
 }
 
 export default {
@@ -40,7 +41,11 @@ export default {
                 password: password
             })
                 .then(res => {
-                    state.user = res.data.data;
+                    if(res.data.data){
+                        state.user = res.data.data;
+                    } else {
+                        Materialize.toast('That username is already taken.', 2000);
+                    }
                 })
                 .catch(handleError)
         },
