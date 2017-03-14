@@ -1,7 +1,9 @@
 <template>
     <div>
         <div class="parallax-container">
-            <div class="parallax"></div>
+            <div class="parallax">
+                <img class="parallax-bg" src="https://cdn0.vox-cdn.com/uploads/chorus_image/image/53522233/Nintendo_Switch_2.0.0.jpg">
+            </div>
         </div>
         <div class="section blue-grey darken-2 center">
             <div class="row container">
@@ -20,11 +22,14 @@
                 </div>
             </div>
             <div>
-                <sup>*Note that your Steam profile must be set to public for us to be able to query your owned games. You can set your profile back to private after we have linked your account.</sup>
+                <sup>*Note that your Steam profile must be set to public our app to work. You can set your profile back to private after you've linked your account.</sup>
             </div>
         </div>
         <div class="parallax-container">
-            <div class="bgimg-2 center">
+            <div class="parallax">
+                <img class="parallax-bg" src="http://unsplash.com/photos/CuFYW1c97w8/download?force=true">
+            </div>
+            <div class="center">
                 <router-link to="/sign-up" class="sign-up waves-effect waves-indigo btn btn-large indigo hoverable raised">Sign Up Today</router-link>
             </div>
         </div>
@@ -33,26 +38,29 @@
 
 <script>
     export default {
-        name: 'landing-page'
+        name: 'landing-page',
+        mounted: function () {
+            $('.parallax').parallax();
+        }
     }
 
 </script>
 
 <style>
     .parallax-container {
-        height: 400px;
+        height: 500px;
     }
     
     .sign-up {
         margin-top: 70px;
     }
     
-    .parallax {
-        /* The image used */
+    .parallax-bg {
+        width: 100%;
+    }
+    /*.parallax {
         background-image: url("https://cdn0.vox-cdn.com/uploads/chorus_image/image/53522233/Nintendo_Switch_2.0.0.jpg");
-        /* Set a specific height */
         min-width: 100%;
-        /* Create the parallax scrolling effect */
         background-attachment: fixed;
         background-position: center;
         background-repeat: no-repeat;
@@ -66,7 +74,7 @@
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
-    }
+    }*/
     
     .section {
         padding-top: 20px;
@@ -78,5 +86,4 @@
         margin-top: 5px;
         margin-bottom: 5px;
     }
-
 </style>

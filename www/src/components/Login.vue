@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form id="loginModal" class="modal">
+        <form @submit.prevent="loginUser" id="loginModal" class="modal">
             <div class="modal-content">
                 <h4 class="center">Login</h4>
                 <div class="row">
@@ -46,6 +46,15 @@
                 complete : onModalHide
             });
             $('#loginModal').modal('open');
+        },
+        methods: {
+            loginUser() {
+                this.$root.$data.store.actions.login(this.username, this.password);
+                this.username = '';
+                this.password = '';
+                $('#loginModal').modal('close');
+                this.$router.push({ path: '/' })
+            }
         }
     }
 

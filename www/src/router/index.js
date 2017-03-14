@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import Home from '../components/Home'
 import Login from '../components/Login'
 import SignUp from '../components/SignUp'
+import Search from '../components/Search'
+import Connections from '../components/Connections'
 // import ProfileRoutes from './profile'
 import CreateGroup from '../components/CreateGroup'
 
@@ -29,7 +31,18 @@ export default new Router({
       path: '/creategroup',
       name: 'CreateGroup',
       component: CreateGroup
-    }
-    //...ProfileRoutes
+    },
+    {
+    path: '/search',
+    name: 'search',
+    component: Search
+  },
+  {
+    path: '/connections',
+    name: 'connections',
+    component: Connections
+  }
+  
+    //profileroutes
   ]
 })

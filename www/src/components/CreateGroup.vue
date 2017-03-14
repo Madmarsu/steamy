@@ -1,28 +1,29 @@
 <template>
     <div class="container">
-        <form @submit.prevent="createGroup(name, game, description)">
-            <h4>Create Group</h4>
-            <div class="input-field">
-                <input id="game" type="text" v-model="game">
-                <!-- Add dropdown and autocomplete-->
-                <label for="game">Game</label>
-            </div>
-            <div class="input-field">
-                <input id="title" type="text" v-model="title">
-                <label for="title">Title</label>
-            </div>
-            <div class="row">
-                <form class="col s12">
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <textarea id="textarea1" class="materialize-textarea"></textarea>
-                            <label for="textarea1">Description</label>
-                        </div>
+        <div class="card blue-grey">
+            <form @submit.prevent="createGroup(name, game, description)">
+                <div class="card-content white-text">
+                    <h4 class="center">Create Group</h4>
+                    <div class="input-field">
+                        <select v-model="game">
+                            <option v-for="game in games" value="game.name">{{ game.name }}</option>
+                        </select>
+                        <label>Game</label>
                     </div>
-                </form>
-            </div>
-            <button>Create Group</button>
-        </form>
+                    <div class="input-field">
+                        <input id="title" type="text" v-model="title">
+                        <label for="title">Title</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <textarea id="textarea1" class="materialize-textarea"></textarea>
+                        <label for="textarea1">Description</label>
+                    </div>
+                    <div class="input-field center">
+                        <button class="waves-effect waves-teal btn indigo" type="submit">Create Group</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </template>
 
@@ -34,10 +35,23 @@
         components: {},
         data() {
             return {
-                game: '',
                 title: '',
-                description: ''
+                description: '',
+                games: [{
+                    name: "Mass Effect",
+                    appId: 1
+                }, {
+                    name: "Breath of the Wild",
+                    appId: 2
+                }, {
+                    name: "Fire Emblem",
+                    appId: 3
+                }],
+                game: ''
             }
+        },
+        mounted: function () {
+            $('select').material_select();
         },
         methods: {
             createGroup(game, title, description) {
