@@ -56,6 +56,16 @@ export default {
                     Materialize.toast(res.data.message, 1000);
                 })
                 .catch(handleError);
+        },
+        checkLoggedIn(){
+            api('http://localhost:3000/check-logged-in')
+                .then(res => {
+                    if(res.data.message){
+                        console.log('You are not logged in');
+                    } else {
+                        state.user = res.data.data;
+                    }
+                })
         }
     }
 }

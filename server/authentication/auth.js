@@ -29,8 +29,8 @@ router.post('/login', (req, res) => {
     .then(user => {
       user.validatePassword(req.body.password)
         .then(valid => {
-          if(!valid){
-            return res.send({error: 'Invalid Username or Password'})
+          if (!valid) {
+            return res.send({ error: 'Invalid Username or Password' })
           }
           req.session.uid = user._id;
           req.session.save()
@@ -63,19 +63,38 @@ router.delete('/logout', (req, res) => {
 
 router.get('/authenticate', (req, res) => {
   if (!req.session.uid) {
-    return res.send ({
-      error:"Please login or register to continue!" 
+    return res.send({
+      error: "Please login or register to continue!"
     })
   }
   Users.findById(req.session.uid).then(user => {
-    return res.send ({
+    return res.send({
       data: user
     })
-  }).catch(err=>{
+  }).catch(err => {
     return res.send({
-      error:err 
+      error: err
     })
   })
+})
+
+router.get('/check-logged-in', (req, res) => {
+  if (!req.session.uid) {
+    return res.send({
+      message: 'You aren\'t logged in'
+    })
+  }
+  Users.findById(req.session.uid)
+    .then(user => {
+      return res.send({
+        data: user
+      })
+        .catch(err => {
+          return res.send({
+            error: err
+          })
+        })
+    })
 })
 
 

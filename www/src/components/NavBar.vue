@@ -43,6 +43,9 @@
                 this.$root.$data.store.actions.logout();
                 this.$router.push({ path: '/' });
             }
+        },
+        mounted(){
+                this.$root.$data.store.actions.checkLoggedIn();
         }
     }
 
