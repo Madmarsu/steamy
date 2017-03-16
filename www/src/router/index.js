@@ -5,7 +5,7 @@ import Login from '../components/Login'
 import SignUp from '../components/SignUp'
 import Search from '../components/Search'
 import Connections from '../components/Connections'
-// import ProfileRoutes from './profile'
+import ProfileRoutes from './profile'
 import CreateGroup from '../components/CreateGroup'
 
 Vue.use(Router)
@@ -40,8 +40,7 @@ export default new Router({
     path: '/connections',
     name: 'connections',
     component: Connections
-  }
-  
-    //profileroutes
+  },  
+  ...ProfileRoutes
   ]
 })
