@@ -6,6 +6,7 @@ export default [{
   component: MainPage,
   children: [{
     path: 'edit',
+    name: "profileEdit",
     component: Edit,
     beforeEnter: (to, from, next) => {
       if (to.params.id != "") {
