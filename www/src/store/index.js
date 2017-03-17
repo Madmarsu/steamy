@@ -10,7 +10,8 @@ let state = {
     user: {},
     error: {},
     userResults: [],
-    groupResults: []
+    groupResults: [],
+    activeProfile: {}
 }
 
 let handleError = (err) => {
@@ -50,7 +51,9 @@ export default {
                 game: selectedGame
             })
                 .then(res => {
-                    console.log(res.data.data);
+                    let users = res.data.data.forEach(user => {
+                        user.password = null;
+                    });
                     state.groupResults = [];
                     state.userResults = res.data.data;
                 })
@@ -58,6 +61,13 @@ export default {
         clearSearch(){
             state.userResults = [];
             state.groupResults = [];
+        },
+        setActiveProfile(profileId){
+            api('profile/' + profileId)
+                .then(res => {
+                    state.activeProfile = res.data.data;
+                })
+                .catch(handleError);
         },
         updateBio(bio){
             api.put('myprofile/update', bio)

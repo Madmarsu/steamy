@@ -38,6 +38,7 @@
                         <tr v-for="userResult in userResults">
                             <td><img :src="userResult.avatar" class="avatar"></td>
                             <td>{{ userResult.username }}</td>
+                            <td><router-link class="waves-effect waves-teal btn indigo" :to="'/profile/' + userResult._id">View Profile</router-link></td>
                         </tr>
                     </tbody>
                 </table>

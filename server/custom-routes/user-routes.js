@@ -142,7 +142,7 @@ export default {
             Users.findById(req.params.id)
                 .then(user => {
                     user.password = null;
-                    res.send(action, user)
+                    res.send(handleResponse(action, user))
                 })
                 .catch(error => {
                     return next(handleResponse(action, null, error))
