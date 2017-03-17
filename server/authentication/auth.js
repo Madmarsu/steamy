@@ -86,14 +86,15 @@ router.get('/check-logged-in', (req, res) => {
   }
   Users.findById(req.session.uid)
     .then(user => {
+      user.password = null;
       return res.send({
         data: user
       })
-        .catch(err => {
-          return res.send({
-            error: err
-          })
-        })
+    })
+    .catch(err => {
+      return res.send({
+        error: err
+      })
     })
 })
 

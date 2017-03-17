@@ -66,6 +66,14 @@ export default {
                         state.user = res.data.data;
                     }
                 })
+        },
+        linkSteam(){
+            window.location.href = 'http://localhost:3000/steam/auth';
+            // api('http://localhost:3000/steam/auth')
+            //     .then(res => {
+            //         console.log(res);
+            //         state.user = res.data.user;
+            //     })
         }
     }
 }

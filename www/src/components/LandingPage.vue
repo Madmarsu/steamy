@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div>
-                <sup>*Note that your Steam profile must be set to public our app to work. You can set your profile back to private after you've linked your account.</sup>
+                <sup>*Note that your Steam profile must be set to public for our app to work. You can set your profile back to private after you've linked your account.</sup>
             </div>
         </div>
         <div class="parallax-container">

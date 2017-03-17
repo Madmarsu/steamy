@@ -9,7 +9,7 @@ import { models } from '../config/constants'
 let schema = new Schema({
     username: { type: String, required: true, unique: true, uniqueCaseInsensitive: true },
     password: { type: String, required: true },
-    bio: { type: String },
+    bio: { type: String, default: 'Tell us about yourself!' },
     steamId: { type: String },
     games: { type: Array },
     avatar: { type: String },

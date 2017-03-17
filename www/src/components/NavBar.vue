@@ -1,9 +1,7 @@
 <template>
     <div>
         <ul id="dropdown1" class="dropdown-content">
-            <!--<li>
-                <router-link to="profile">My Profile</router-link>
-            </li>-->
+            <li><router-link :to="'/profile/' + this.$root.$data.store.state.user._id">My Profile</router-link></li>
             <li><router-link to="/">My Connections</router-link></li>
             <li><router-link to="/search">Search</router-link></li>
             <li><router-link to="/creategroup">Create Group</router-link></li>
@@ -11,10 +9,10 @@
             <li><a @click="logout">Logout</a></li>
         </ul>
         <div class="navbar-fixed">
-            <nav class="indigo darken-4">
+            <nav class="black">
                 <div class="nav-wrapper">
                     <a href="#" class="brand-logo">Multi Player</a>
-                    <router-link v-if="this.$root.$data.store.state.user._id" to="/" class="brand-logo center">Hello, {{ this.$root.$data.store.state.user.username }}</router-link>
+                    <router-link v-if="this.$root.$data.store.state.user._id" :to="'/profile/' + this.$root.$data.store.state.user._id" class="brand-logo center">Hello, {{ this.$root.$data.store.state.user.username }}</router-link>
                     <ul v-if="!this.$root.$data.store.state.user._id" class="right hide-on-med-and-down">
                         <li>
                             <router-link to="login">Login</router-link>
