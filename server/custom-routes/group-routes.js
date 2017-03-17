@@ -22,7 +22,7 @@ export default {
         reqType: 'post',
         method(req, res, next){
             let action = 'Find groups by game'
-            Groups.find({game:req.body.appid}) 
+            Groups.find({game: req.body.game}) 
             .then(groups=>{
                 let sortedGroups = groups.sort(function(a, b){
                     return b.members.length - a.members.length

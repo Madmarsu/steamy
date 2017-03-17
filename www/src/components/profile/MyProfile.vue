@@ -1,0 +1,112 @@
+<template>
+  <div class="container" v-cloak>
+    <div class="row">
+      <div class="card blue-grey">
+        <div class="card-content white-text">
+          <h4 class="left-align">{{user.username}}</h4>
+        </div>
+      </div>
+    </div>
+    <div class="card blue-grey">
+      <div class="card-content white-text">
+        <div class="row">
+          <div class="col s6">
+            <div>
+              <img v-if="user.steamId" :src="user.avatar" class="avatar">
+              <img v-if="!user.steamId" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=200%C3%97200&w=200&h=200" class="avatar">
+            </div>
+            <div>
+              <button @click="toggleEditBio" class="waves-effect waves-teal btn-floating indigo"><i v-if="!showEditBio" class="fa fa-pencil"></i><i v-if="showEditBio" class="fa fa-times"></i></button>
+              {{ user.bio }}
+              <div v-if="showEditBio">
+                <h4>Edit Bio</h4>
+                <form class="row" @submit.prevent="updateBio">
+                  <div class="col s12 input-field">
+                    <textarea class="materialize-textarea" cols="30" rows="10" v-model="editBio"></textarea>
+                  </div>
+                  <button class="waves-effect waves-teal btn indigo" type="submit">Update Bio</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="col s6">
+            <img v-if="!user.steamId" @click="linkSteam" src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png"
+              class="hoverable">
+            <button class="waves-effect waves-teal btn indigo" @click="updateGames">Update Games</button>
+            <h5>{{ user.username }}'s Games</h5>
+            <div class="scrollable">
+              <ul>
+                <li v-for="game in user.games"><img :src="'http://media.steampowered.com/steamcommunity/public/images/apps/' + game.appid + '/' + game.img_icon_url + '.jpg'">                  {{ game.name }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col s6">
+      <div class="row">
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: 'my-profile',
+    data() {
+      return {
+        userId: "",
+        showEditBio: false,
+        editBio: ''
+
+      }
+    },
+    computed: {
+      user() {
+        return this.$root.$data.store.state.user;
+      }
+    },
+    mounted() {
+    },
+    methods: {
+      linkSteam() {
+        this.$root.$data.store.actions.linkSteam();
+      },
+      updateGames() {
+        this.$root.$data.store.actions.updateGames();
+      },
+      toggleEditBio() {
+        this.showEditBio = !this.showEditBio;
+        this.editBio = this.user.bio;
+      },
+      updateBio(){
+        this.$root.$data.store.actions.updateBio({
+          bio: this.editBio
+        })
+        this.showEditBio = false;
+      }
+    }
+  }
+
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+  .avatar {
+    width: 200px;
+    height: 200px;
+    border-radius: 5%;
+    margin: 10px;
+  }
+  
+  .scrollable {
+    max-height: 400px;
+    overflow: auto;
+  }
+  
+  [v-cloak] {
+    display: none;
+  }
+  
+  [profileButton] {}
+</style>

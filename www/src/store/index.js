@@ -2,14 +2,15 @@ import axios from 'axios'
 
 let api = axios.create({
     baseURL: 'http://localhost:3000/api/',
-    timeout: 3000,
+    timeout: 5000,
     withCredentials: true
 })
 
 let state = {
     user: {},
-    error: {}
-
+    error: {},
+    userResults: [],
+    groupResults: []
 }
 
 let handleError = (err) => {
@@ -20,6 +21,52 @@ let handleError = (err) => {
 export default {
     state,
     actions: {
+        createGroup(selectedGame, title, description){
+            api.post('group/create', {
+                title: title,
+                game: selectedGame,
+                description: description
+            })
+                .then(res => {
+                    console.log(res.data.data);
+                    // this.$router.push({ path: '/group/' + res.data.data._id })
+                })
+                .catch(handleError);
+        },
+        searchGroups(selectedGame){
+            api.post('group/findbygame', {
+                game: selectedGame
+            })
+                .then(res => {
+                    console.log(res.data.data);
+                    state.userResults = [];
+                    state.groupResults = res.data.data;
+                })
+                .catch(handleError);
+        },
+        searchIndividual(selectedGame){
+            console.log('hit the individual');
+            api.post('find/individual', {
+                game: selectedGame
+            })
+                .then(res => {
+                    console.log(res.data.data);
+                    state.groupResults = [];
+                    state.userResults = res.data.data;
+                })
+        },
+        clearSearch(){
+            state.userResults = [];
+            state.groupResults = [];
+        },
+        updateBio(bio){
+            api.put('myprofile/update', bio)
+                .then(res => {
+                    console.log('updated bio')
+                    state.user = res.data.data
+                })
+                .catch(handleError);
+        },
         login(username, userPass){
             api.post('http://localhost:3000/login', {
                 username: username,
@@ -74,6 +121,14 @@ export default {
             //         console.log(res);
             //         state.user = res.data.user;
             //     })
+        },
+        updateGames(){
+            api('http://localhost:3000/steam/update')
+                .then(res => {
+                    state.user.games = res.data.data;
+                    Materialize.toast(res.data.msg, 1000);
+                })
+                .catch(handleError);
         }
     }
 }

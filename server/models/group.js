@@ -8,7 +8,7 @@ import { models } from '../config/constants'
 
 let schema = new Schema({
     title: { type: String, required: true },
-    description: {type: String},
+    description: { type: String },
     game: { type: String },
     chatHistory: [{ type: Schema.Types.Mixed }],
     // Relations

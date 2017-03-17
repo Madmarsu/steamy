@@ -84,7 +84,7 @@ export default {
             let action = 'Update bio'
             Users.findByIdAndUpdate(req.session.uid, {$set: {bio: req.body.bio}})
             .then(user =>{
-                res.send(action, user)
+                res.send(handleResponse(action, user))
             })
             .catch(error=>{
                 return next(handleResponse(action, null, error))
@@ -96,9 +96,10 @@ export default {
         reqType: 'post',
         method(req, res, next){
             let action = 'Find individual by game'
-            Users.find({games:{ $in: [req.body.appid]}})
-            .then(user =>{
-                res.send(handleResponse(action, user))
+            Users.find({games:{ $elemMatch: {name: req.body.game}}})
+            .then(users =>{
+                console.log(users);
+                res.send(handleResponse(action, users))
             })
             .catch(error=>{
                 return next(handleResponse(action, null, error))
@@ -140,6 +141,7 @@ export default {
             let action = 'Find another\'s profile'
             Users.findById(req.params.id)
                 .then(user => {
+                    user.password = null;
                     res.send(action, user)
                 })
                 .catch(error => {
