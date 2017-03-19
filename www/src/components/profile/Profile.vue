@@ -5,10 +5,10 @@
         <div class="card-content white-text">
           <h4 class="left-align">{{ activeProfile.username }}</h4>
           <div class="right-align">
-            <a class="waves-effect waves-light btn" v-if="!isFriend">Add Friend</a>
-            <a class="waves-effect waves-light btn" v-if="isFriend">Add to Group</a>
-            <a class="waves-effect waves-light btn" v-if="!isBlocked">Block</a>
-            <a class="waves-effect waves-light btn" v-if="isBlocked">Remove Block</a>
+            <a class="waves-effect waves-light btn indigo" @click="addFriend" v-if="!isFriend">Add Friend</a>
+            <a class="waves-effect waves-light btn indigo" v-if="isFriend">Add to Group</a>
+            <a class="waves-effect waves-light btn indigo" v-if="!isBlocked">Block</a>
+            <a class="waves-effect waves-light btn indigo" v-if="isBlocked">Remove Block</a>
           </div>
         </div>
       </div>
@@ -57,6 +57,19 @@
         return this.$root.$data.store.state.activeProfile;
       },
       isFriend() {
+        // let user = this.$root.$data.store.state.user;
+        // let activeProfile = this.$root.$data.store.state.activeProfile;
+        // let exists;
+        // user.friends.forEach(friend => {
+        //   if(friend == activeProfile){
+        //     exists = true
+        //   }
+        // })
+        // if(exists = true){
+        //   return true
+        // } else {
+        //   return false
+        // }
         return false
       },
       isBlocked() {
@@ -67,6 +80,9 @@
       this.$root.$data.store.actions.setActiveProfile(this.$route.params.id);
     },
     methods: {
+      addFriend(){
+        this.$root.$data.store.actions.addFriend(this.$route.params.id);
+      },
       linkSteam() {
         this.$root.$data.store.actions.linkSteam();
       },

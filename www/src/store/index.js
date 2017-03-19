@@ -62,6 +62,27 @@ export default {
             state.userResults = [];
             state.groupResults = [];
         },
+        addFriend(profileId){
+            api.put('profile/' + profileId + '/invite', {
+                username: state.user.username,
+                userId: state.user._id
+            })
+                .then(res => {
+                    Materialize.toast(res.data.message, 1000);
+                })
+        },
+        acceptFriend(invite){
+            api.put('invite/accept', invite)
+                .then(res => {
+                    this.checkLoggedIn();
+                })
+        },
+        declineFriend(invite){
+            api.put('invite/decline', invite)
+                .then(res => {
+                    this.checkLoggedIn();
+                })
+        },
         setActiveProfile(profileId){
             api('profile/' + profileId)
                 .then(res => {
@@ -73,7 +94,7 @@ export default {
             api.put('myprofile/update', bio)
                 .then(res => {
                     console.log('updated bio')
-                    state.user = res.data.data
+                    this.checkLoggedIn();
                 })
                 .catch(handleError);
         },
@@ -120,6 +141,9 @@ export default {
                     if(res.data.message){
                         console.log('You are not logged in');
                     } else {
+                        let currentUser = res.data.data.friends.forEach(friend => {
+                            friend.password = null;
+                        })
                         state.user = res.data.data;
                     }
                 })

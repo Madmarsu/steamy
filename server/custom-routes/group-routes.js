@@ -13,7 +13,12 @@ export default {
                     group.members.push(req.session.uid);
                     group.save()
                         .then(group => {
-                            res.send(handleResponse(action, group))
+                            Users.findById(req.session.uid)
+                                .then(user => {
+                                    user.groups.push(group._id);
+                                    user.save();
+                                    res.send(handleResponse(action, group))
+                                })
                         })
                 })
                 .catch(error => {

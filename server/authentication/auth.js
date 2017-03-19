@@ -84,7 +84,7 @@ router.get('/check-logged-in', (req, res) => {
       message: 'You aren\'t logged in'
     })
   }
-  Users.findById(req.session.uid)
+  Users.findById(req.session.uid).populate('friends groups')
     .then(user => {
       user.password = null;
       return res.send({

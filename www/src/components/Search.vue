@@ -29,13 +29,13 @@
                 <div class="left">
                     <h5>Results</h5>
                 </div>
-                <div class="right"><button class="waves-effect waves-teal btn indigo">Reset</button></div>
+                <div class="right"><button @click="resetSearch" class="waves-effect waves-teal btn indigo">Reset</button></div>
                 <table class="bordered">
                     <thead>
                         <tr class="center"></tr>
                     </thead>
                     <tbody>
-                        <tr v-for="userResult in userResults">
+                        <tr v-for="userResult in userResults" v-if="user._id !== userResult._id">
                             <td><img :src="userResult.avatar" class="avatar"></td>
                             <td>{{ userResult.username }}</td>
                             <td><router-link class="waves-effect waves-teal btn indigo" :to="'/profile/' + userResult._id">View Profile</router-link></td>
@@ -77,6 +77,9 @@
             }
         },
         computed: {
+            user(){
+                return this.$root.$data.store.state.user;
+            },
             userResults(){
                 return this.$root.$data.store.state.userResults;
             },
