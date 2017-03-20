@@ -8,6 +8,8 @@ import Connections from '../components/Connections'
 import MyProfile from '../components/profile/MyProfile'
 import Profile from '../components/profile/Profile'
 import CreateGroup from '../components/CreateGroup'
+import Chat from '../components/Chat'
+import Group from '../components/Group'
 
 Vue.use(Router)
 
@@ -51,6 +53,17 @@ export default new Router({
     path: '/profile/:id',
     name: 'Profile',
     component: Profile
+  },
+  {
+    path: '/chat/:id',
+    name: 'Chat',
+    component: Chat
+  },
+  {
+    path: '/group/:id',
+    name: 'Group',
+    component: Group
+
   }
   ]
 })

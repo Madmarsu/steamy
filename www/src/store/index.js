@@ -1,5 +1,7 @@
 import axios from 'axios'
+import io from 'socket.io-client'
 
+let socket = io('http://localhost:3000')
 let api = axios.create({
     baseURL: 'http://localhost:3000/api/',
     timeout: 5000,
@@ -11,7 +13,8 @@ let state = {
     error: {},
     userResults: [],
     groupResults: [],
-    activeProfile: {}
+    activeProfile: {},
+    messages: []
 }
 
 let handleError = (err) => {
@@ -22,6 +25,16 @@ let handleError = (err) => {
 export default {
     state,
     actions: {
+        listenForMessage(){
+            socket.on('message', res =>{
+            console.log(res.data)
+            state.messages.push(res.data)
+            console.log('This is from your store', state.messages)
+            })
+        },
+        emitMessage(message) {
+            socket.emit('message', message, () => console.log('Something'))
+        },
         createGroup(selectedGame, title, description){
             api.post('group/create', {
                 title: title,
