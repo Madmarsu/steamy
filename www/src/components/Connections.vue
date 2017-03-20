@@ -47,8 +47,8 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="group in this.$root.$data.store.state.user.groups">
+                                        <td><router-link :to="'/group/' + group._id">{{ group.title }}</router-link></td>
                                         <td>{{ group.game }}</td>
-                                        <td>{{ group.title }}</td>
                                     </tr>
                                 </tbody>
                             </table>

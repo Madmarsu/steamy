@@ -65,7 +65,7 @@ export default {
         reqType: 'get',
         method(req, res, next) {
             let action = 'Go to specific group'
-            Groups.findById(req.params.id).populate('chatHistory', 'members')
+            Groups.findById(req.params.id).populate('chatHistory members')
                 .then(group => {
                     res.send(handleResponse(action, group))
                 })

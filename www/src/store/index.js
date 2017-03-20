@@ -14,6 +14,7 @@ let state = {
     userResults: [],
     groupResults: [],
     activeProfile: {},
+    activeGroup: {},
     messages: []
 }
 
@@ -42,8 +43,14 @@ export default {
                 description: description
             })
                 .then(res => {
-                    console.log(res.data.data);
-                    // this.$router.push({ path: '/group/' + res.data.data._id })
+                    state.activeGroup = res.data.data;
+                })
+                .catch(handleError);
+        },
+        setActiveGroup(groupId){
+            api('group/' + groupId)
+                .then(res => {
+                    state.activeGroup = res.data.data;
                 })
                 .catch(handleError);
         },

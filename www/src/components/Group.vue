@@ -3,8 +3,8 @@
     <div class="container">
       <div class="card blue-grey">
         <div class="card-content white-text">
-          <h5>{{ group.title }}</h5>
-          <blockquote>{{ group.description }}</blockquote>
+          <h5>{{ this.$root.$data.store.state.activeGroup.title }}</h5>
+          <blockquote>{{ this.$root.$data.store.state.activeGroup.description }}</blockquote>
         </div>
       </div>
     </div>
@@ -32,7 +32,7 @@
             <div class="card-content white-text">
               <h5>Members</h5>
               <ul>
-                <li v-for="member in group.members">{{ member.username }}</li>
+                <li v-for="member in this.$root.$data.store.state.activeGroup.members">{{ member.username }}</li>
               </ul>
             </div>
           </div>
@@ -88,6 +88,7 @@
       }
     },
     mounted() {
+      this.$root.$data.store.actions.setActiveGroup(this.$route.params.id);
       store.actions.listenForMessage()
       console.log(store.state.messages)
     },
