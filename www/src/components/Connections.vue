@@ -9,10 +9,15 @@
                             <h3 class="center">My Connections</h3>
                             <p v-if="this.$root.$data.store.state.user.invites[0]">You've got new invites!</p>
                             <ul>
-                                <li v-for="invite in this.$root.$data.store.state.user.invites"><router-link :to="'/profile/' + invite.userId">{{ invite.username }}</router-link> would like to be your friend! <button @click="acceptFriend(invite)" class="waves-effect waves-teal indigo btn">Accept</button> <button @click="declineFriend(invite)" class="waves-effect waves-teal indigo btn">Decline</button></li>
+                                <li v-for="invite in this.$root.$data.store.state.user.invites">
+                                    <router-link :to="'/profile/' + invite.userId">{{ invite.username }}</router-link> would like to be your friend! <button @click="acceptFriend(invite)"
+                                        class="waves-effect waves-teal indigo btn">Accept</button> <button @click="declineFriend(invite)"
+                                        class="waves-effect waves-teal indigo btn">Decline</button></li>
                             </ul>
-                            <router-link to="/search" class="left waves-teal waves-effect indigo btn">Find Connections</router-link>
-                            <router-link to="/creategroup" class="right waves-teal waves-effect indigo btn">Create Group</router-link>
+                            <div class="center">
+                                <router-link to="/search" class="waves-teal waves-effect indigo btn">Find Connections</router-link>
+                                <router-link to="/creategroup" class="waves-teal waves-effect indigo btn">Create Group</router-link>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -23,7 +28,9 @@
                             <h5 class="center">Friends</h5>
                             <p v-if="!this.$root.$data.store.state.user.friends[0]">You have no friends. SAD!</p>
                             <ul v-if="this.$root.$data.store.state.user.friends[0]">
-                                <li v-for="friend in this.$root.$data.store.state.user.friends"><router-link :to="'/profile/' + friend._id">{{ friend.username }}</router-link></li>
+                                <li v-for="friend in this.$root.$data.store.state.user.friends">
+                                    <router-link :to="'/profile/' + friend._id">{{ friend.username }}</router-link>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -58,19 +65,25 @@
 <script>
     export default {
         name: 'connections',
-        data(){
+        data() {
             return {
 
             }
         },
-        mounted: function(){
-            $(".dropdown-button").dropdown();
+        mounted: function () {
+            $(document).ready(function () {
+                $(".dropdown-button").dropdown();
+            });
+            if (!this.$root.$data.store.state.user.steamId) {
+                this.$router.push({ path: '/myprofile' })
+                Materialize.toast('Please link your Steam account.', 1000);
+            }
         },
         methods: {
-            acceptFriend(invite){
+            acceptFriend(invite) {
                 this.$root.$data.store.actions.acceptFriend(invite);
             },
-            declineFriend(invite){
+            declineFriend(invite) {
                 this.$root.$data.store.actions.declineFriend(invite);
             }
         }

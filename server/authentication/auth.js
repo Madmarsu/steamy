@@ -25,7 +25,7 @@ router.post('/register', (req, res) => {
 
 
 router.post('/login', (req, res) => {
-  Users.findOne({ username: req.body.username })
+  Users.findOne({ username: req.body.username }).populate('friends groups')
     .then(user => {
       user.validatePassword(req.body.password)
         .then(valid => {

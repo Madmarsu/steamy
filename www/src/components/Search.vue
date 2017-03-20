@@ -38,7 +38,9 @@
                         <tr v-for="userResult in userResults" v-if="user._id !== userResult._id">
                             <td><img :src="userResult.avatar" class="avatar"></td>
                             <td>{{ userResult.username }}</td>
-                            <td><router-link class="waves-effect waves-teal btn indigo" :to="'/profile/' + userResult._id">View Profile</router-link></td>
+                            <td>
+                                <router-link class="waves-effect waves-teal btn indigo" :to="'/profile/' + userResult._id">View Profile</router-link>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -77,32 +79,38 @@
             }
         },
         computed: {
-            user(){
+            user() {
                 return this.$root.$data.store.state.user;
             },
-            userResults(){
+            userResults() {
                 return this.$root.$data.store.state.userResults;
             },
-            groupResults(){
+            groupResults() {
                 return this.$root.$data.store.state.groupResults;
             }
         },
         mounted: function () {
-            $('select').material_select();
+            $(document).ready(function () {
+                $('select').material_select();
+            });
+            if (!this.$root.$data.store.state.user.steamId) {
+                this.$router.push({ path: '/myprofile' })
+                Materialize.toast('Please link your Steam account.', 1000);
+            }
         },
         methods: {
-            search(){
+            search() {
                 var selectedConnect = document.getElementById('selectedConnect');
                 console.log(selectedConnect.value);
                 var selectedGame = document.getElementById('selectedGame');
                 console.log(selectedGame.value);
-                if(selectedConnect.value == 'group'){
+                if (selectedConnect.value == 'group') {
                     this.$root.$data.store.actions.searchGroups(selectedGame.value);
-                } else if (selectedConnect.value == 'individual'){
+                } else if (selectedConnect.value == 'individual') {
                     this.$root.$data.store.actions.searchIndividual(selectedGame.value);
                 }
             },
-            resetSearch(){
+            resetSearch() {
                 this.$root.$data.store.actions.clearSearch();
             }
         }
