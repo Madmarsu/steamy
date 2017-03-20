@@ -67,6 +67,7 @@
       }
     },
     mounted() {
+      $(".dropdown-button").dropdown();
     },
     methods: {
       linkSteam() {
