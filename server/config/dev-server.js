@@ -12,12 +12,26 @@ import Steam from '../authentication/steam'
 import passport from "passport"
 import SteamStrategy from "../lib/passport-steam"
 import axios from "axios"
+import socket_io from "socket.io"
+let app = express()
+let server = require('http').createServer(app);
+let io = socket_io.listen(server)
 
+io.on('connection', function (socket) {
+
+    socket.on('message', data => {
+        console.log('this is from dev-server', data)
+        //debugger
+        io.emit('message', {
+            data: data
+        })
+       
+    })
+
+})
 // ENABLE ROUTES IF USING app SIDE ROUTING
 // import routes from './routes'
 
-let app = express()
-let server = require('http').createServer(app);
 
 function Validate(req, res, next) {
     // BLOCK STEAM ROUTES IF ALREADY LINKED
@@ -120,19 +134,19 @@ app.use('/api', api)
 app.use('/', defaultErrorHandler)
 
 // USING SOCKETS
-let io = require('socket.io')(server, {
-    origins: '*:*'
-})
+// let io = require('socket.io')(server, {
+//     origins: '*:*'
+// })
 
-io.on('connection', function (socket) {
-    socket.emit('CONNECTED', {
-        socket: socket.id,
-        message: 'Welcome to the Jungle'
-    })
+// io.on('connection', function (socket) {
+//     socket.emit('CONNECTED', {
+//         socket: socket.id,
+//         message: 'Welcome to the Jungle'
+//     })
 
-    socket.on('update', function (data) {
-        console.log(data)
-    })
+//     socket.on('update', function (data) {
+//         console.log(data)
+//     })
 
     // socket.join('Kanban', function(){
     //     io.to('Kanban').emit('message', 'A new user has joined the channel.');
@@ -142,6 +156,6 @@ io.on('connection', function (socket) {
     //         // data.text = data.text.replace(/[<>]/g, '');
     //     io.to('Kanban').emit('message', data);
     // });
-});
+// });
 
 export default server
