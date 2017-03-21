@@ -32,8 +32,11 @@ router.post('/login', (req, res) => {
           if (!valid) {
             return res.send({ error: 'Invalid Username or Password' })
           }
+          console.log(user._id)
           req.session.uid = user._id;
+          req.session.steamId = user.steamId
           req.session.save()
+          console.log(req.session)
           user.password = null
           delete user.password
           res.send({

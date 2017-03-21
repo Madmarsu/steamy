@@ -9,6 +9,7 @@
             <a class="waves-effect waves-light btn indigo" v-if="isFriend">Add to Group</a>
             <a class="waves-effect waves-light btn indigo" v-if="!isBlocked">Block</a>
             <a class="waves-effect waves-light btn indigo" v-if="isBlocked">Remove Block</a>
+             <a class="waves-effect waves-light btn indigo" @click="testMessage">Test</a>
           </div>
         </div>
       </div>
@@ -87,6 +88,9 @@
     methods: {
       addFriend() {
         this.$root.$data.store.actions.addFriend(this.$route.params.id);
+      },
+      testMessage(){
+        this.$root.$data.store.actions.sendMessage("Hi guys!", this.activeProfile._id);
       },
       linkSteam() {
         this.$root.$data.store.actions.linkSteam();

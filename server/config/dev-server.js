@@ -114,11 +114,13 @@ app.use(function (req, res, next) {
     // }
 });
 
-app.use(session)
+
 // Initialize Passport!  Also use passport.session() middleware, to support
 // persistent login sessions (recommended).
+app.use(session)
 app.use(passport.initialize());
 app.use(passport.session());
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use('*', logger)
