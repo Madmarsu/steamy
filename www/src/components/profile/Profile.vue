@@ -30,7 +30,12 @@
             <h5>{{ activeProfile.username }}'s Games</h5>
             <div class="scrollable">
               <ul>
-                <li v-for="game in activeProfile.games"><img :src="'http://media.steampowered.com/steamcommunity/public/images/apps/' + game.appid + '/' + game.img_icon_url + '.jpg'">                  {{ game.name }}</li>
+                <li v-for="game in activeProfile.games">
+                  <div class="flex-container">
+                    <img :src="'http://media.steampowered.com/steamcommunity/public/images/apps/' + game.appid + '/' + game.img_icon_url + '.jpg'">
+                    <span class="game-title">{{ game.name }}</span>
+                  </div>
+                </li>
               </ul>
             </div>
           </div>
@@ -54,7 +59,7 @@
       }
     },
     computed: {
-      activeProfile(){
+      activeProfile() {
         return this.$root.$data.store.state.activeProfile;
       },
       isFriend() {
@@ -81,7 +86,7 @@
       this.$root.$data.store.actions.setActiveProfile(this.$route.params.id);
     },
     methods: {
-      addFriend(){
+      addFriend() {
         this.$root.$data.store.actions.addFriend(this.$route.params.id);
       },
       testMessage(){
@@ -97,7 +102,7 @@
         this.showEditBio = !this.showEditBio;
         this.editBio = this.user.bio;
       },
-      updateBio(){
+      updateBio() {
         this.$root.$data.store.actions.updateBio({
           bio: this.editBio
         })
@@ -115,6 +120,17 @@
     height: 200px;
     border-radius: 5%;
     margin: 10px;
+  }
+  
+  .flex-container {
+    display: flex;
+    align-items: center;
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+  
+  .game-title {
+    padding-left: 3px;
   }
   
   .scrollable {

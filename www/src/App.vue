@@ -67,4 +67,13 @@
     border-bottom: 1px solid #b4b0ff;
     box-shadow: 0 1px 0 0 #b4b0ff;
   }
+
+  li > a {
+    color: #283593;
+    font-weight: bold;
+  }
+
+  li > a:hover {
+    color: white;
+  }
 </style>

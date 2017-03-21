@@ -72,10 +72,11 @@
         },
         mounted: function () {
             $(".dropdown-button").dropdown();
-            if (!this.$root.$data.store.state.user.steamId) {
-                this.$router.push({ path: '/myprofile' })
-                Materialize.toast('Please link your Steam account.', 1000);
-            }
+            this.$root.$data.store.actions.checkLoggedIn();
+            // if (!this.$root.$data.store.state.user.steamId) {
+            //     this.$router.push({ path: '/myprofile' })
+            //     Materialize.toast('Please link your Steam account.', 1000);
+            // }
         },
         methods: {
             acceptFriend(invite) {

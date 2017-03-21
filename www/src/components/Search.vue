@@ -61,6 +61,7 @@
                         <tr v-for="groupResult in groupResults">
                             <td><strong>{{ groupResult.title }}</strong></td>
                             <td>{{ groupResult.description }}</td>
+                            <td><button @click="joinGroup(groupResult)" class="waves-effect waves-teal btn indigo">Join Group</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -90,13 +91,11 @@
             }
         },
         mounted: function () {
-            $(document).ready(function () {
-                $('select').material_select();
-            });
-            if (!this.$root.$data.store.state.user.steamId) {
-                this.$router.push({ path: '/myprofile' })
-                Materialize.toast('Please link your Steam account.', 1000);
-            }
+            $('select').material_select();
+            // if (!this.$root.$data.store.state.user.steamId) {
+            //     this.$router.push({ path: '/myprofile' })
+            //     Materialize.toast('Please link your Steam account.', 1000);
+            // }
         },
         methods: {
             search() {
@@ -112,6 +111,13 @@
             },
             resetSearch() {
                 this.$root.$data.store.actions.clearSearch();
+            },
+            joinGroup(group) {
+                let vue = this;
+                this.$root.$data.store.actions.joinGroup(group);
+                setTimeout(function () {
+                    vue.$router.push({ path: '/group/' + group._id });
+                }, 500);
             }
         }
     }
@@ -122,5 +128,9 @@
     .avatar {
         width: 50px;
         height: 50px;
+    }
+    
+    strong {
+        font-weight: bold;
     }
 </style>

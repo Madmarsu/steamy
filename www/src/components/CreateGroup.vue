@@ -43,10 +43,10 @@
             $(document).ready(function () {
                 $('select').material_select();
             });
-            if (!this.$root.$data.store.state.user.steamId) {
-                this.$router.push({ path: '/myprofile' })
-                Materialize.toast('Please link your Steam account.', 1000);
-            }
+            // if (!this.$root.$data.store.state.user.steamId) {
+            //     this.$router.push({ path: '/myprofile' })
+            //     Materialize.toast('Please link your Steam account.', 1000);
+            // }
         },
         methods: {
             createGroup() {

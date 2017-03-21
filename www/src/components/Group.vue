@@ -5,6 +5,9 @@
         <div class="card-content white-text">
           <h5>{{ this.$root.$data.store.state.activeGroup.title }}</h5>
           <blockquote>{{ this.$root.$data.store.state.activeGroup.description }}</blockquote>
+          <div class="right-align">
+            <button class="waves-effect waves-teal btn indigo" @click="leaveGroup">Leave Group</button>
+          </div>
         </div>
       </div>
     </div>
@@ -72,16 +75,16 @@
         messages: [{
           username: 'freckles',
           message: 'you suck at dark souls'
-        },{
+        }, {
           username: 'testing',
           message: 'hey i\'m actually really good'
-        },{
+        }, {
           username: 'testing123',
           message: 'i just died'
-        },{
+        }, {
           username: 'jason',
           message: 'dark souuuuuuuls'
-        },{
+        }, {
           username: 'jaime',
           message: 'praise the sun'
         }]
@@ -97,7 +100,13 @@
         store.actions.emitMessage(this.message)
         this.message = ''
       },
-
+      leaveGroup() {
+        let vue = this;
+        this.$root.$data.store.actions.leaveGroup(this.$route.params.id);
+        setTimeout(function () {
+          vue.$router.push({ path: '/' })
+        }, 500);
+      }
     },
     computed: {
       messages() {
@@ -130,11 +139,12 @@
   #submit-button {
     margin-top: 2%;
   }
+  
   strong {
     font-weight: bold;
     color: #283593;
   }
-
+  
   blockquote {
     border-left: 5px solid #283593;
   }
