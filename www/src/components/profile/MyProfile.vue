@@ -7,43 +7,79 @@
         </div>
       </div>
     </div>
-    <div class="card blue-grey">
-      <div class="card-content white-text">
-        <div class="row">
-          <div class="col s6">
-            <div class="center">
-              <img v-if="user.steamId" :src="user.avatar" class="avatar">
-              <img v-if="!user.steamId" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=200%C3%97200&w=200&h=200" class="avatar">
-            </div>
-            <div>
-              <button @click="toggleEditBio" class="waves-effect waves-teal btn-floating indigo"><i v-if="!showEditBio" class="fa fa-pencil"></i><i v-if="showEditBio" class="fa fa-times"></i></button>              {{ user.bio }}
-              <div v-if="showEditBio">
-                <h4>Edit Bio</h4>
-                <form class="row" @submit.prevent="updateBio">
-                  <div class="col s12 input-field">
-                    <textarea class="materialize-textarea" cols="30" rows="10" v-model="editBio"></textarea>
+    <div class="row">
+      <div class="col s9">
+        <div class="card blue-grey">
+          <div class="card-content white-text">
+            <div class="row">
+              <div class="col s6">
+                <div class="center">
+                  <img v-if="user.steamId" :src="user.avatar" class="avatar">
+                  <img v-if="!user.steamId" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=200%C3%97200&w=200&h=200" class="avatar">
+                </div>
+                <div>
+                  <button @click="toggleEditBio" class="waves-effect waves-teal btn-floating indigo"><i v-if="!showEditBio" class="fa fa-pencil"></i><i v-if="showEditBio" class="fa fa-times"></i></button>                  {{ user.bio }}
+                  <div v-if="showEditBio">
+                    <h4>Edit Bio</h4>
+                    <form class="row" @submit.prevent="updateBio">
+                      <div class="col s12 input-field">
+                        <textarea class="materialize-textarea" cols="30" rows="10" v-model="editBio"></textarea>
+                      </div>
+                      <button class="waves-effect waves-teal btn indigo" type="submit">Update Bio</button>
+                    </form>
                   </div>
-                  <button class="waves-effect waves-teal btn indigo" type="submit">Update Bio</button>
-                </form>
+                </div>
+              </div>
+              <div class="col s6">
+                <div class="center">
+                  <img @click="linkSteam" src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png" class="hoverable">
+                  <p v-if="user.steamId"><sup>*To update your avatar or your games library, simply sign in through Steam again.</sup></p>
+                  <h5>{{ user.username }}'s Games</h5>
+                </div>
+                <div class="scrollable">
+                  <ul>
+                    <li v-for="game in user.games">
+                      <div class="flex-container">
+                        <img :src="'http://media.steampowered.com/steamcommunity/public/images/apps/' + game.appid + '/' + game.img_icon_url + '.jpg'">
+                        <span class="game-title">{{ game.name }}</span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
-          <div class="col s6">
-            <div class="center">
-              <img @click="linkSteam" src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png" class="hoverable">
-              <p v-if="user.steamId"><sup>*To update your avatar or your games library, simply sign in through Steam again.</sup></p>
-              <h5>{{ user.username }}'s Games</h5>
-            </div>
-            <div class="scrollable">
-              <ul>
-                <li v-for="game in user.games">
-                  <div class="flex-container">
-                    <img :src="'http://media.steampowered.com/steamcommunity/public/images/apps/' + game.appid + '/' + game.img_icon_url + '.jpg'">
-                    <span class="game-title">{{ game.name }}</span>
-                  </div>
-                </li>
-              </ul>
-            </div>
+        </div>
+      </div>
+      <div class="col s3">
+        <div class="card blue-grey">
+          <div class="card-content white-text">
+            <h5>Friends</h5>
+            <p v-if="!user.friends[0]">You have no friends. SAD!</p>
+            <ul v-if="user.friends[0]">
+              <li v-for="friend in user.friends">
+                <router-link :to="'/profile/' + friend._id">{{ friend.username }}</router-link>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="card blue-grey">
+          <div class="card-content white-text">
+            <h5 class="center">Groups</h5>
+            <p v-if="!this.$root.$data.store.state.user.groups[0]">You're in no groups. SAD!</p>
+            <table v-if="this.$root.$data.store.state.user.groups[0]" class="bordered">
+              <thead>
+                <tr></tr>
+              </thead>
+              <tbody>
+                <tr v-for="group in this.$root.$data.store.state.user.groups">
+                  <td>
+                    <router-link :to="'/group/' + group._id">{{ group.title }}</router-link>
+                  </td>
+                  <td>{{ group.game }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -111,11 +147,11 @@
     padding-top: 3px;
     padding-bottom: 3px;
   }
-
+  
   .game-title {
     padding-left: 3px;
   }
-
+  
   .scrollable {
     max-height: 400px;
     overflow: auto;
