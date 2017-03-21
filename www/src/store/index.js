@@ -36,6 +36,15 @@ export default {
         emitMessage(message) {
             socket.emit('message', message, () => console.log('Something'))
         },
+        sendMessage(message, target){
+            api.post("chat/"+target+"/send", {
+                personal: true,
+                message: message
+            }).then(res => {
+                    console.log(res.data.data)
+                })
+                .catch(handleError);
+        },
         createGroup(selectedGame, title, description){
             api.post('group/create', {
                 title: title,
