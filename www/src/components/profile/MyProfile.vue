@@ -36,7 +36,12 @@
             </div>
             <div class="scrollable">
               <ul>
-                <li v-for="game in user.games"><img :src="'http://media.steampowered.com/steamcommunity/public/images/apps/' + game.appid + '/' + game.img_icon_url + '.jpg'">                  {{ game.name }}</li>
+                <li v-for="game in user.games">
+                  <div class="flex-container">
+                    <img :src="'http://media.steampowered.com/steamcommunity/public/images/apps/' + game.appid + '/' + game.img_icon_url + '.jpg'">
+                    <span class="game-title">{{ game.name }}</span>
+                  </div>
+                </li>
               </ul>
             </div>
           </div>
@@ -100,6 +105,17 @@
     margin: 10px;
   }
   
+  .flex-container {
+    display: flex;
+    align-items: center;
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+
+  .game-title {
+    padding-left: 3px;
+  }
+
   .scrollable {
     max-height: 400px;
     overflow: auto;
