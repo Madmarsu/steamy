@@ -54,6 +54,20 @@ export default {
                 })
                 .catch(handleError);
         },
+        joinGroup(group){
+            api.put('group/' + group._id + '/join')
+                .then(res => {
+                    state.activeGroup = res.data.data;
+                })
+                .catch(handleError);
+        },
+        leaveGroup(groupId){
+            api.put('group/' + groupId + '/leave')
+                .then(res => {
+                    state.activeGroup = res.data.data;
+                })
+                .catch(handleError);
+        },
         searchGroups(selectedGame){
             api.post('group/findbygame', {
                 game: selectedGame

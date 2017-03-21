@@ -26,6 +26,59 @@ export default {
                 })
         }
     },
+    joinGroup: {
+        path: '/group/:id/join',
+        reqType: 'put',
+        method(req, res, next){
+            let action = 'Join group'
+            Groups.findById(req.params.id)
+                .then(group => {
+                    group.members.push(req.session.uid);
+                    group.save()
+                    Users.findById(req.session.uid)
+                        .then(user => {
+                            user.groups.push(group._id);
+                            user.save()
+                                .then(user => {
+                                    Groups.findById(group._id).populate('members')
+                                        .then(group => {
+                                            res.send(handleResponse(action, group))
+                                        })
+                                })
+                        })
+                })
+                .catch(error => {
+                    return next(handleResponse(action, null, error))
+                })
+        }
+    },
+    leaveGroup: {
+        path: '/group/:id/leave',
+        reqType: 'put',
+        method(req, res, next){
+            let action = 'Leave group'
+            Groups.findById(req.params.id)
+                .then(group => {
+                    let userIndex = group.members.indexOf(req.session.uid);
+                    group.members.splice(userIndex, 1);
+                    group.save()
+                        .then(group => {
+                            Users.findById(req.session.uid)
+                                .then(user => {
+                                    let groupIndex = user.groups.indexOf(group._id);
+                                    user.groups.splice(groupIndex, 1);
+                                    user.save()
+                                        .then(user => {
+                                            res.send(handleResponse(action, group))
+                                        })
+                                })
+                        })
+                })
+                .catch(error => {
+                    return next(handleResponse(action, null, error))
+                })
+        }
+    },
     findGroupByGame: {
         path: '/group/findbygame',
         reqType: 'post',
