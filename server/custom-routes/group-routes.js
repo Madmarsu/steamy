@@ -1,6 +1,7 @@
 let Groups = require('../models/group');
 let Users = require('../models/user');
 let Chats = require('../models/chat');
+let Messages = require('../models/messages');
 
 export default {
     createGroup: {
@@ -120,11 +121,36 @@ export default {
             let action = 'Go to specific group'
             Groups.findById(req.params.id).populate('chatHistory members')
                 .then(group => {
+                    group.members.forEach(member => {
+                        member.password = null
+                    })
+                    if(group.chatHistory.length > 50){
+                        group.chatHistory = group.chatHistory.slice(group.chatHistory.length - 50, 50)
+                    }
                     res.send(handleResponse(action, group))
                 })
                 .catch(error => {
                     return next(handleResponse(action, null, error))
                 })
+        }
+    },
+    sendGroupMessage: {
+        path: '/group/:id/send',
+        reqType: 'post',
+        method(req, res, next){
+            let action = 'send group message'
+            Messages.create({
+                username: req.body.username,
+                userId: req.session.uid,
+                content: req.body.message
+            }).then(message => {
+                Groups.findById(req.params.id)
+                .then(group => {
+                    group.chatHistory.push(message._id)
+                    group.save()
+                    res.send(handleResponse(action, message))
+                })
+            })
         }
     }
 }
