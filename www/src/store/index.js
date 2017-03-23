@@ -1,4 +1,5 @@
 import axios from 'axios'
+import router from '../router'
 import io from 'socket.io-client'
 
 let socket = io('http://localhost:3000')
@@ -33,18 +34,25 @@ export default {
             console.log('This is from your store', state.messages)
             })
         },
-        emitMessage(message) {
-            socket.emit('message', message, () => console.log('Something'))
-        },
-        sendMessage(message, target){
-            api.post("chat/"+target+"/send", {
-                personal: true,
-                message: message
-            }).then(res => {
-                    console.log(res.data.data)
+        sendGroupMessage(message, groupId){
+            api.post('/group/' + groupId + '/send', message)
+                .then(res => {
+                    router.app.$socket.emit('groupMessage');
                 })
                 .catch(handleError);
         },
+        // emitMessage(message) {
+        //     socket.emit('message', message, () => console.log('Something'))
+        // },
+        // sendMessage(message, target){
+        //     api.post("chat/"+target+"/send", {
+        //         personal: true,
+        //         message: message
+        //     }).then(res => {
+        //             console.log(res.data.data)
+        //         })
+        //         .catch(handleError);
+        // },
         createGroup(selectedGame, title, description){
             api.post('group/create', {
                 title: title,

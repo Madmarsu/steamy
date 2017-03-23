@@ -16,8 +16,8 @@
         <div class="col s10">
           <div class="card blue-grey">
             <div id="chat">
-              <p v-for="item in messages">
-                <strong>{{ item.username }}:</strong> {{ item.message }}
+              <p v-for="message in this.$root.$data.store.state.activeGroup.chatHistory">
+                <strong>{{ message.username }}:</strong> {{ message.content }}
               </p>
             </div>
             <form @submit.prevent="submitMessage" class="row">
@@ -58,46 +58,27 @@
   import store from '../store'
   export default {
     name: 'hello',
+    sockets: {
+      groupMessageAdded(){
+        this.$root.$data.store.actions.setActiveGroup(this.$route.params.id);
+      }
+    },
     data() {
       return {
         msg: 'Welcome to Your Vue.js App',
-        message: '',
-        user: {},
-        group: {
-          title: 'you died',
-          game: 'DARK SOULS III',
-          description: 'lol',
-          members: [{
-            username: 'freckles',
-            _id: '155166451'
-          }]
-        },
-        messages: [{
-          username: 'freckles',
-          message: 'you suck at dark souls'
-        }, {
-          username: 'testing',
-          message: 'hey i\'m actually really good'
-        }, {
-          username: 'testing123',
-          message: 'i just died'
-        }, {
-          username: 'jason',
-          message: 'dark souuuuuuuls'
-        }, {
-          username: 'jaime',
-          message: 'praise the sun'
-        }]
+        message: ''
       }
     },
     mounted() {
       this.$root.$data.store.actions.setActiveGroup(this.$route.params.id);
-      store.actions.listenForMessage()
-      console.log(store.state.messages)
     },
     methods: {
       submitMessage() {
-        store.actions.emitMessage(this.message)
+        let message = {
+          username: this.$root.$data.store.state.user.username,
+          message: this.message
+        }
+        this.$root.$data.store.actions.sendGroupMessage(message, this.$route.params.id);
         this.message = ''
       },
       leaveGroup() {

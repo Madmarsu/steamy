@@ -1,7 +1,7 @@
 let Groups = require('../models/group');
 let Users = require('../models/user');
 let Chats = require('../models/chat');
-let Messages = require('../models/messages');
+let Messages = require('../models/message');
 
 export default {
     getSpecificChat: {
