@@ -21,6 +21,10 @@ const models = {
     name: 'Chat',
     endpoint: 'chats',
     useCustomRoutes: true
+  },
+  message: {
+    name: 'Message',
+    endpoint: 'messages'
   }
 }
 

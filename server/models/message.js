@@ -7,8 +7,9 @@ const SALT_FACTOR = 10;
 import { models } from '../config/constants'
 
 let schema = new Schema({
-    members: [{ type: ObjectId, ref: models.user.name }],
-    chatHistory: [{ type: ObjectId, ref: models.message.name }]
+    username: { type: String, required: true },
+    userId: { type: ObjectId, ref: models.user.name },
+    content: { type: String, required: true }
 })
 
-module.exports = mongoose.model(models.chat.name, schema)
+module.exports = mongoose.model(models.message.name, schema)
