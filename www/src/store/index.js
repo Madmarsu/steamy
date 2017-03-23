@@ -16,7 +16,7 @@ let state = {
     groupResults: [],
     activeProfile: {},
     activeGroup: {},
-    messages: []
+    activeChat: {}
 }
 
 let handleError = (err) => {
@@ -34,6 +34,27 @@ export default {
             console.log('This is from your store', state.messages)
             })
         },
+        createChat(profileId){
+            api.post('/profile/' + profileId + '/chat')
+                .then(res => {
+                    state.activeChat = res.data.data;
+                    router.push({ path: '/chat/' + state.activeChat._id })
+                })
+                .catch(handleError);
+        },
+        sendChatMessage(message, chatId){
+            api.post('/chat/' + chatId + '/send', message)
+                .then(res => {
+                    router.app.$socket.emit('chatMessage');
+                })
+                .catch(handleError);
+        },
+        setActiveChat(chatId){
+            api('/chat/' + chatId)
+                .then(res => {
+                    state.activeChat = res.data.data;
+                })
+        },
         sendGroupMessage(message, groupId){
             api.post('/group/' + groupId + '/send', message)
                 .then(res => {
@@ -41,18 +62,6 @@ export default {
                 })
                 .catch(handleError);
         },
-        // emitMessage(message) {
-        //     socket.emit('message', message, () => console.log('Something'))
-        // },
-        // sendMessage(message, target){
-        //     api.post("chat/"+target+"/send", {
-        //         personal: true,
-        //         message: message
-        //     }).then(res => {
-        //             console.log(res.data.data)
-        //         })
-        //         .catch(handleError);
-        // },
         createGroup(selectedGame, title, description){
             api.post('group/create', {
                 title: title,

@@ -3,16 +3,26 @@
     <div class="container">
       <div class="card blue-grey">
         <div class="card-content white-text">
-          <h5>Chatting with { username }</h5>
+          <div v-for="member in this.$root.$data.store.state.activeChat.members">
+            <h5 v-if="user._id != member._id">Chatting with {{ member.username }}</h5>
+
+          </div>
         </div>
       </div>
     </div>
     <div class="container">
       <div class="card blue-grey">
         <div id="chat">
-          <p v-for="item in messages">
-            {{ item }}
-          </p>
+          <div v-for="message in this.$root.$data.store.state.activeChat.chatHistory">
+            <p v-if="message.userId == user._id" class="right-align">
+            <strong><router-link :to="'/profile/' + message.userId">{{ message.username }}</router-link>:</strong> {{ message.content
+            }}
+            </p>
+            <p v-if="message.userId != user._id">
+            <strong><router-link :to="'/profile/' + message.userId">{{ message.username }}</router-link>:</strong> {{ message.content
+            }}
+            </p>
+          </div>
         </div>
         <form @submit.prevent="submitMessage" class="row">
           <div class="input-field col s10">
@@ -26,13 +36,6 @@
 
 
     </div>
-    <!--<div class="col s2">
-        <div class="card blue-grey">
-          <div class="card-content white-text">
-            <h5>Online</h5>
-          </div>
-        </div>
-      </div>-->
 
 
   </div>
@@ -42,35 +45,39 @@
   import store from '../store'
   export default {
     name: 'hello',
+    sockets: {
+      chatMessageAdded() {
+        this.$root.$data.store.actions.setActiveChat(this.$route.params.id);
+      }
+    },
     data() {
       return {
         msg: 'Welcome to Your Vue.js App',
-        message: '',
-        user: {}
-        //messages: []
+        message: ''
+      }
+    },
+    computed: {
+      user() {
+        return this.$root.$data.store.state.user;
       }
     },
     mounted() {
-      store.actions.listenForMessage()
-      console.log(store.state.messages)
+      this.$root.$data.store.actions.setActiveChat(this.$route.params.id);
     },
     methods: {
-
       submitMessage() {
-        store.actions.emitMessage(this.message)
+        let message = {
+          username: this.$root.$data.store.state.user.username,
+          message: this.message
+        }
+        this.$root.$data.store.actions.sendChatMessage(message, this.$route.params.id);
         this.message = ''
-        setTimeout(function(){
+        setTimeout(function () {
           var objDiv = document.getElementById("chat");
           objDiv.scrollTop = objDiv.scrollHeight;
         }, 500);
       },
 
-    },
-    computed: {
-      messages() {
-        console.log(store.state.messages)
-        return store.state.messages
-      }
     }
   }
 

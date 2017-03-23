@@ -16,9 +16,14 @@
         <div class="col s10">
           <div class="card blue-grey">
             <div id="chat">
-              <p v-for="message in this.$root.$data.store.state.activeGroup.chatHistory">
-                <strong>{{ message.username }}:</strong> {{ message.content }}
-              </p>
+              <div v-for="message in this.$root.$data.store.state.activeGroup.chatHistory">
+                <p v-if="message.userId == user._id" class="right-align">
+                  <strong><router-link :to="'/profile/' + message.userId">{{ message.username }}</router-link>:</strong>                  {{ message.content }}
+                </p>
+                <p v-if="message.userId != user._id">
+                  <strong><router-link :to="'/profile/' + message.userId">{{ message.username }}</router-link>:</strong>                  {{ message.content }}
+                </p>
+              </div>
             </div>
             <form @submit.prevent="submitMessage" class="row">
               <div class="input-field col s10">
@@ -35,7 +40,9 @@
             <div class="card-content white-text">
               <h5>Members</h5>
               <ul>
-                <li v-for="member in this.$root.$data.store.state.activeGroup.members">{{ member.username }}</li>
+                <li v-for="member in this.$root.$data.store.state.activeGroup.members">
+                  <router-link :to="'/profile/' + member._id">{{ member.username }}</router-link>
+                </li>
               </ul>
             </div>
           </div>
@@ -59,7 +66,7 @@
   export default {
     name: 'hello',
     sockets: {
-      groupMessageAdded(){
+      groupMessageAdded() {
         this.$root.$data.store.actions.setActiveGroup(this.$route.params.id);
       }
     },
@@ -67,6 +74,11 @@
       return {
         msg: 'Welcome to Your Vue.js App',
         message: ''
+      }
+    },
+    computed: {
+      user(){
+        return this.$root.$data.store.state.user;
       }
     },
     mounted() {
@@ -80,6 +92,10 @@
         }
         this.$root.$data.store.actions.sendGroupMessage(message, this.$route.params.id);
         this.message = ''
+        setTimeout(function () {
+          var objDiv = document.getElementById("chat");
+          objDiv.scrollTop = objDiv.scrollHeight;
+        }, 500);
       },
       leaveGroup() {
         let vue = this;
@@ -87,12 +103,6 @@
         setTimeout(function () {
           vue.$router.push({ path: '/' })
         }, 500);
-      }
-    },
-    computed: {
-      messages() {
-        console.log(store.state.messages)
-        return store.state.messages
       }
     }
   }

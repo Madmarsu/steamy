@@ -6,10 +6,10 @@
           <h4 class="left-align">{{ activeProfile.username }}</h4>
           <div class="right-align">
             <a class="waves-effect waves-light btn indigo" @click="addFriend" v-if="!isFriend">Add Friend</a>
+            <a class="waves-effect waves-light btn indigo" @click="createChat" v-if="isFriend">Send Message</a>
             <a class="waves-effect waves-light btn indigo" v-if="isFriend">Add to Group</a>
             <a class="waves-effect waves-light btn indigo" v-if="!isBlocked">Block</a>
             <a class="waves-effect waves-light btn indigo" v-if="isBlocked">Remove Block</a>
-             <a class="waves-effect waves-light btn indigo" @click="testMessage">Test</a>
           </div>
         </div>
       </div>
@@ -63,20 +63,19 @@
         return this.$root.$data.store.state.activeProfile;
       },
       isFriend() {
-        // let user = this.$root.$data.store.state.user;
-        // let activeProfile = this.$root.$data.store.state.activeProfile;
-        // let exists;
-        // user.friends.forEach(friend => {
-        //   if(friend == activeProfile){
-        //     exists = true
-        //   }
-        // })
-        // if(exists = true){
-        //   return true
-        // } else {
-        //   return false
-        // }
-        return false
+        let user = this.$root.$data.store.state.user;
+        let activeProfile = this.$root.$data.store.state.activeProfile;
+        let exists;
+        user.friends.forEach(friend => {
+          if(friend._id == activeProfile._id){
+            exists = true
+          }
+        })
+        if(exists){
+          return true
+        } else {
+          return false
+        }
       },
       isBlocked() {
         return false
@@ -88,9 +87,6 @@
     methods: {
       addFriend() {
         this.$root.$data.store.actions.addFriend(this.$route.params.id);
-      },
-      testMessage(){
-        this.$root.$data.store.actions.sendMessage("Hi guys!", this.activeProfile._id);
       },
       linkSteam() {
         this.$root.$data.store.actions.linkSteam();
@@ -107,6 +103,9 @@
           bio: this.editBio
         })
         this.showEditBio = false;
+      },
+      createChat(){
+        this.$root.$data.store.actions.createChat(this.$route.params.id);
       }
     }
   }
