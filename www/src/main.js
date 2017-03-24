@@ -11,12 +11,32 @@ Vue.use(VueSocketio, ':3000')
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
-new Vue({
+let vue = new Vue({
   el: '#app',
   data: {
     store
   },
+  methods: {
+    loadNavBar() {
+      $(".dropdown-button").dropdown();
+    }
+  },
   router,
   template: '<App/>',
-  components: { App }
+  components: { App },
+  watch: {
+    '$route' (to, from) {
+      // react to route changes...
+      $(".dropdown-button").dropdown();
+    }
+  }
+})
+
+vue.loadNavBar()
+router.beforeEach((to, from, next) => {
+  if (from.name === "MyProfile" && !vue.$data.store.state.user.steamId) {
+    next(false)
+    return
+  }
+  next()
 })
