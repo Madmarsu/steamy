@@ -58,7 +58,7 @@
                         <tr class="center"></tr>
                     </thead>
                     <tbody>
-                        <tr v-for="groupResult in groupResults">
+                        <tr v-for="groupResult in groupResults" v-if="groupResult.members.length != 0">
                             <td><strong>{{ groupResult.title }}</strong></td>
                             <td>{{ groupResult.description }}</td>
                             <td>{{ groupResult.members.length }} Members</td>

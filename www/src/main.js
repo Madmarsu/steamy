@@ -16,23 +16,10 @@ let vue = new Vue({
   data: {
     store
   },
-  methods: {
-    loadNavBar() {
-      $(".dropdown-button").dropdown();
-    }
-  },
   router,
   template: '<App/>',
   components: { App },
-  watch: {
-    '$route' (to, from) {
-      // react to route changes...
-      $(".dropdown-button").dropdown();
-    }
-  }
-})
-
-vue.loadNavBar()
+ })
 router.beforeEach((to, from, next) => {
   if (from.name === "MyProfile" && !vue.$data.store.state.user.steamId) {
     next(false)

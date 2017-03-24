@@ -34,10 +34,6 @@
 <script>
     export default {
         name: 'Nav',
-        // mounted: function () {
-        //     $(".dropdown-button").dropdown();
-        // },
-
         methods: {
             logout(){
                 this.$root.$data.store.actions.logout();
@@ -47,6 +43,13 @@
         mounted(){
                 this.$root.$data.store.actions.checkLoggedIn();
                 $(".dropdown-button").dropdown();
+        },
+        activated(){
+            //console.log("activated")
+            setTimeout(()=>{
+                $(".dropdown-button").dropdown();
+            }, 500)
+            
         }
     }
 
@@ -59,4 +62,5 @@
     .menu-padding {
         margin-right: 30px;
     }
+    
 </style>
