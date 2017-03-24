@@ -59,12 +59,22 @@
     border-bottom: 1px solid #b4b0ff;
     box-shadow: 0 1px 0 0 #b4b0ff;
   }
-    .input-field textarea:focus+label {
+  
+  .input-field textarea:focus+label {
     color: #b4b0ff;
   }
   
   .input-field textarea:focus {
     border-bottom: 1px solid #b4b0ff;
     box-shadow: 0 1px 0 0 #b4b0ff;
+  }
+  
+  .page-link {
+    font-weight: bold;
+    color: #283593;
+  }
+  
+  .page-link:hover {
+    color: white;
   }
 </style>

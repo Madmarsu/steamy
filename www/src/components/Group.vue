@@ -18,10 +18,10 @@
             <div id="chat">
               <div v-for="message in this.$root.$data.store.state.activeGroup.chatHistory">
                 <p v-if="message.userId == user._id" class="right-align">
-                  <strong><router-link :to="'/profile/' + message.userId">{{ message.username }}</router-link>:</strong>                  {{ message.content }}
+                  {{ message.content }}
                 </p>
                 <p v-if="message.userId != user._id">
-                  <strong><router-link :to="'/profile/' + message.userId">{{ message.username }}</router-link>:</strong>                  {{ message.content }}
+                  <strong><router-link class="page-link" :to="'/profile/' + message.userId">{{ message.username }}</router-link></strong>                  {{ message.content }}
                 </p>
               </div>
             </div>
@@ -41,7 +41,7 @@
               <h5>Members</h5>
               <ul>
                 <li v-for="member in this.$root.$data.store.state.activeGroup.members">
-                  <router-link :to="'/profile/' + member._id">{{ member.username }}</router-link>
+                  <router-link class="page-link" :to="'/profile/' + member._id">{{ member.username }}</router-link>
                 </li>
               </ul>
             </div>
@@ -68,6 +68,10 @@
     sockets: {
       groupMessageAdded() {
         this.$root.$data.store.actions.setActiveGroup(this.$route.params.id);
+        setTimeout(function () {
+          var objDiv = document.getElementById("chat");
+          objDiv.scrollTop = objDiv.scrollHeight;
+        }, 500);
       }
     },
     data() {
@@ -77,7 +81,7 @@
       }
     },
     computed: {
-      user(){
+      user() {
         return this.$root.$data.store.state.user;
       }
     },

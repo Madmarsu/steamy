@@ -26,12 +26,21 @@
                     <div class="card blue-grey">
                         <div class="card-content white-text">
                             <h5 class="center">Friends</h5>
-                            <p v-if="!this.$root.$data.store.state.user.friends[0]">You have no friends. SAD!</p>
-                            <ul v-if="this.$root.$data.store.state.user.friends[0]">
-                                <li v-for="friend in this.$root.$data.store.state.user.friends">
-                                    <router-link :to="'/profile/' + friend._id">{{ friend.username }}</router-link>
-                                </li>
-                            </ul>
+                            <p v-if="!this.$root.$data.store.state.user.friends[0]">You have no friends. Go make some friends!</p>
+                            <table v-if="this.$root.$data.store.state.user.friends[0]" class="bordered">
+                                <thead>
+                                    <tr></tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="friend in this.$root.$data.store.state.user.friends">
+                                        <td><img :src="friend.avatar" class="avatar"></td>
+                                        <td>
+                                            <router-link class="page-link" :to="'/profile/' + friend._id">{{ friend.username }}</router-link>
+                                        </td>
+                                        <td><a class="waves-effect waves-light btn indigo" @click="createChat(friend._id)">Send Message</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -40,14 +49,16 @@
                     <div class="card blue-grey">
                         <div class="card-content white-text">
                             <h5 class="center">Groups</h5>
-                            <p v-if="!this.$root.$data.store.state.user.groups[0]">You're in no groups. SAD!</p>
+                            <p v-if="!this.$root.$data.store.state.user.groups[0]">You're in no groups. Go join some groups!</p>
                             <table v-if="this.$root.$data.store.state.user.groups[0]" class="bordered">
                                 <thead>
                                     <tr></tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="group in this.$root.$data.store.state.user.groups">
-                                        <td><router-link :to="'/group/' + group._id">{{ group.title }}</router-link></td>
+                                        <td>
+                                            <router-link class="page-link" :to="'/group/' + group._id">{{ group.title }}</router-link>
+                                        </td>
                                         <td>{{ group.game }}</td>
                                     </tr>
                                 </tbody>
@@ -71,12 +82,15 @@
             }
         },
         mounted: function () {
+            let vue = this;
             $(".dropdown-button").dropdown();
             this.$root.$data.store.actions.checkLoggedIn();
-            // if (!this.$root.$data.store.state.user.steamId) {
-            //     this.$router.push({ path: '/myprofile' })
-            //     Materialize.toast('Please link your Steam account.', 1000);
-            // }
+            // setTimeout(function () {
+            //     if (!vue.$root.$data.store.state.user.steamId) {
+            //         vue.$router.push({ path: '/myprofile' })
+            //         Materialize.toast('Please link your Steam account.', 1000);
+            //     }
+            // }, 500);
         },
         methods: {
             acceptFriend(invite) {
@@ -84,6 +98,9 @@
             },
             declineFriend(invite) {
                 this.$root.$data.store.actions.declineFriend(invite);
+            },
+            createChat(friendId) {
+                this.$root.$data.store.actions.createChat(friendId);
             }
         }
     }
@@ -91,5 +108,8 @@
 </script>
 
 <style>
-
+    .avatar {
+        width: 50px;
+        height: 50px;
+    }
 </style>

@@ -15,12 +15,12 @@
         <div id="chat">
           <div v-for="message in this.$root.$data.store.state.activeChat.chatHistory">
             <p v-if="message.userId == user._id" class="right-align">
-            <strong><router-link :to="'/profile/' + message.userId">{{ message.username }}</router-link>:</strong> {{ message.content
-            }}
+              <strong><router-link class="page-link" :to="'/profile/' + message.userId">{{ message.username }}</router-link>:</strong> {{ message.content
+              }}
             </p>
             <p v-if="message.userId != user._id">
-            <strong><router-link :to="'/profile/' + message.userId">{{ message.username }}</router-link>:</strong> {{ message.content
-            }}
+              <strong><router-link class="page-link" :to="'/profile/' + message.userId">{{ message.username }}</router-link>:</strong> {{ message.content
+              }}
             </p>
           </div>
         </div>
@@ -48,6 +48,10 @@
     sockets: {
       chatMessageAdded() {
         this.$root.$data.store.actions.setActiveChat(this.$route.params.id);
+        setTimeout(function () {
+          var objDiv = document.getElementById("chat");
+          objDiv.scrollTop = objDiv.scrollHeight;
+        }, 500);
       }
     },
     data() {

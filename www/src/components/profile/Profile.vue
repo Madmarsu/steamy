@@ -66,15 +66,17 @@
         let user = this.$root.$data.store.state.user;
         let activeProfile = this.$root.$data.store.state.activeProfile;
         let exists;
-        user.friends.forEach(friend => {
-          if(friend._id == activeProfile._id){
-            exists = true
-          }
-        })
-        if(exists){
-          return true
-        } else {
-          return false
+        if (user.friends[0]) {
+          user.friends.forEach(friend => {
+            if (friend._id == activeProfile._id) {
+              exists = true
+            }
+          })
+          if (exists) {
+            return true
+          } else {
+            return false
+          }0
         }
       },
       isBlocked() {
@@ -104,7 +106,7 @@
         })
         this.showEditBio = false;
       },
-      createChat(){
+      createChat() {
         this.$root.$data.store.actions.createChat(this.$route.params.id);
       }
     }
