@@ -1,4 +1,5 @@
 import axios from 'axios'
+import router from '../router'
 import io from 'socket.io-client'
 
 let socket = io('http://localhost:3000')
@@ -15,7 +16,7 @@ let state = {
     groupResults: [],
     activeProfile: {},
     activeGroup: {},
-    messages: []
+    activeChat: {}
 }
 
 let handleError = (err) => {
@@ -33,15 +34,31 @@ export default {
             console.log('This is from your store', state.messages)
             })
         },
-        emitMessage(message) {
-            socket.emit('message', message, () => console.log('Something'))
+        createChat(profileId){
+            api.post('/profile/' + profileId + '/chat')
+                .then(res => {
+                    state.activeChat = res.data.data;
+                    router.push({ path: '/chat/' + state.activeChat._id })
+                })
+                .catch(handleError);
         },
-        sendMessage(message, target){
-            api.post("chat/"+target+"/send", {
-                personal: true,
-                message: message
-            }).then(res => {
-                    console.log(res.data.data)
+        sendChatMessage(message, chatId){
+            api.post('/chat/' + chatId + '/send', message)
+                .then(res => {
+                    router.app.$socket.emit('chatMessage');
+                })
+                .catch(handleError);
+        },
+        setActiveChat(chatId){
+            api('/chat/' + chatId)
+                .then(res => {
+                    state.activeChat = res.data.data;
+                })
+        },
+        sendGroupMessage(message, groupId){
+            api.post('/group/' + groupId + '/send', message)
+                .then(res => {
+                    router.app.$socket.emit('groupMessage');
                 })
                 .catch(handleError);
         },

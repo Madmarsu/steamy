@@ -1,7 +1,7 @@
 let Groups = require('../models/group');
 let Users = require('../models/user');
 let Chats = require('../models/chat');
-let Messages = require('../models/messages');
+let Messages = require('../models/message');
 
 export default {
     createGroup: {
@@ -41,7 +41,7 @@ export default {
                             user.groups.push(group._id);
                             user.save()
                                 .then(user => {
-                                    Groups.findById(group._id).populate('members')
+                                    Groups.findById(group._id).populate('chatHistory members')
                                         .then(group => {
                                             res.send(handleResponse(action, group))
                                         })

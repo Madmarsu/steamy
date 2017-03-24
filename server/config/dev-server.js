@@ -19,13 +19,13 @@ let io = socket_io.listen(server)
 
 io.on('connection', function (socket) {
 
-    socket.on('message', data => {
-        console.log('this is from dev-server', data)
-        //debugger
-        io.emit('message', {
-            data: data
-        })
-       
+    socket.on('groupMessage', function() {
+        console.log('got a group message')
+        io.emit('groupMessageAdded')
+    })
+    socket.on('chatMessage', function(){
+        console.log('got a chat message')
+        io.emit('chatMessageAdded')
     })
 
 })

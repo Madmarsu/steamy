@@ -1,7 +1,7 @@
 let Groups = require('../models/group');
 let Users = require('../models/user');
 let Chats = require('../models/chat');
-let Messages = require('../models/messages');
+let Messages = require('../models/message');
 
 export default {
     getSpecificChat: {
@@ -14,7 +14,7 @@ export default {
                     chat.members.forEach(member => {
                         member.password = null
                     })
-                    if(chat.chatHistory.length > 50){
+                    if (chat.chatHistory.length > 50) {
                         chat.chatHistory = chat.chatHistory.slice(chat.chatHistory.length - 50, 50)
                     }
                     res.send(handleResponse(action, chat))
@@ -27,7 +27,7 @@ export default {
     sendChatMessage: {
         path: '/chat/:id/send',
         reqType: 'post',
-        method(req, res, next){
+        method(req, res, next) {
             let action = 'send chat message'
             Messages.create({
                 username: req.body.username,
@@ -35,12 +35,64 @@ export default {
                 content: req.body.message
             }).then(message => {
                 Chats.findById(req.params.id)
-                .then(chat => {
-                    chat.chatHistory.push(message._id)
-                    chat.save()
-                    res.send(handleResponse(action, message))
-                })
+                    .then(chat => {
+                        chat.chatHistory.push(message._id)
+                        chat.save()
+                        res.send(handleResponse(action, message))
+                    })
             })
+                .catch(error => {
+                    return next(handleResponse(action, null, error))
+                })
+        }
+    },
+    // createInitialChat: {
+    //     path: '/profile/:id/chat',
+    //     reqType: 'post',
+    //     method(req, res, next) {
+    //         let action = 'create initial chat'
+    //         Chats.create({ members: req.session.uid })
+    //             .then(newChat => {
+    //                 newChat.members.push(req.params.id);
+    //                 newChat.save()
+    //                     .then(chat => {
+    //                     Chats.findById(chat._id).populate('members')
+    //                         .then(chat => {
+    //                             res.send(handleResponse(action, chat))
+    //                         })
+    //                 })
+    //             })
+    //             .catch(error => {
+    //                 return next(handleResponse(action, null, error))
+    //             })
+    //     }
+    // },
+    createChat: {
+        path: '/profile/:id/chat',
+        reqType: 'post',
+        method(req, res, next) {
+            let action = 'Create new chat'
+            Chats.findOne({ $and: [{ members: { $in: [req.params.id] }, members: { $in: [req.session.uid] } }] }).populate('members chatHistory')
+                .then(chat => {
+                    if (!chat) {
+                        Chats.create({ members: req.session.uid })
+                            .then(newChat => {
+                                newChat.members.push(req.params.id);
+                                newChat.save()
+                                    .then(chat => {
+                                        Chats.findById(chat._id).populate('members')
+                                            .then(chat => {
+                                                res.send(handleResponse(action, chat))
+                                            })
+                                    })
+                            })
+                    } else {
+                        res.send(handleResponse(action, chat))
+                    }
+                })
+                .catch(error => {
+                    return next(handleResponse(action, null, error))
+                })
         }
     }
 }
