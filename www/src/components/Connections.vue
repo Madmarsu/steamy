@@ -22,7 +22,7 @@
                     </div>
                 </div>
 
-                <div class="col s6">
+                <div class="col s12 m7">
                     <div class="card blue-grey">
                         <div class="card-content white-text">
                             <h5 class="center">Friends</h5>
@@ -45,7 +45,7 @@
                     </div>
                 </div>
 
-                <div class="col s6">
+                <div class="col s12 m5">
                     <div class="card blue-grey">
                         <div class="card-content white-text">
                             <h5 class="center">Groups</h5>
