@@ -72,7 +72,7 @@ export default {
         reqType: 'post',
         method(req, res, next) {
             let action = 'Create new chat'
-            Chats.findOne({ $and: [{ members: { $in: [req.session.uid] }, members: { $in: [req.params.id] } }] }).populate('members chatHistory')
+            Chats.findOne({ $and: [{ members: { $in: [req.session.uid] }},{ members: { $in: [req.params.id] }}] }).populate('members chatHistory')
                 .then(chat => {
                     if (!chat) {
                         Chats.create({ members: req.session.uid })
