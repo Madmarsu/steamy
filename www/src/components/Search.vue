@@ -61,6 +61,7 @@
                         <tr v-for="groupResult in groupResults">
                             <td><strong>{{ groupResult.title }}</strong></td>
                             <td>{{ groupResult.description }}</td>
+                            <td>{{ groupResult.members.length }} Members</td>
                             <td><button @click="joinGroup(groupResult)" class="waves-effect waves-teal btn indigo">Join Group</button></td>
                         </tr>
                     </tbody>

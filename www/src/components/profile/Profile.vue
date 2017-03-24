@@ -66,7 +66,7 @@
         let user = this.$root.$data.store.state.user;
         let activeProfile = this.$root.$data.store.state.activeProfile;
         let exists;
-        if (user.friends[0]) {
+        if (user.friends) {
           user.friends.forEach(friend => {
             if (friend._id == activeProfile._id) {
               exists = true
@@ -76,7 +76,7 @@
             return true
           } else {
             return false
-          }0
+          }
         }
       },
       isBlocked() {
