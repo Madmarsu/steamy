@@ -83,7 +83,7 @@
         },
         mounted: function () {
             let vue = this;
-            //$(".dropdown-button").dropdown();
+            $(".dropdown-button").dropdown();
             this.$root.$data.store.actions.checkLoggedIn();
             // setTimeout(function () {
             //     if (!vue.$root.$data.store.state.user.steamId) {

@@ -53,9 +53,6 @@
                 let vue = this;
                 var select = document.getElementById('selected');
                 this.$root.$data.store.actions.createGroup(select.value, this.title, this.description);
-                setTimeout(function(){
-                    vue.$router.push({ path: '/group/' + vue.$root.$data.store.state.activeGroup._id });
-                }, 500);
             }
         }
 

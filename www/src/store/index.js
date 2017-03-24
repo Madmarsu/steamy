@@ -70,6 +70,7 @@ export default {
             })
                 .then(res => {
                     state.activeGroup = res.data.data;
+                    router.push({ path: '/group/' + state.activeGroup._id })
                 })
                 .catch(handleError);
         },
