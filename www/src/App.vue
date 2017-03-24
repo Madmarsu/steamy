@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <navbar></navbar>
+    <keep-alive>
+      <navbar></navbar>
+    </keep-alive>
     <main>
       <router-view></router-view>
     </main>

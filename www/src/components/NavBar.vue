@@ -33,9 +33,10 @@
 <script>
     export default {
         name: 'Nav',
-        mounted: function () {
-            $(".dropdown-button").dropdown();
-        },
+        // mounted: function () {
+        //     $(".dropdown-button").dropdown();
+        // },
+
         methods: {
             logout(){
                 this.$root.$data.store.actions.logout();
@@ -44,6 +45,7 @@
         },
         mounted(){
                 this.$root.$data.store.actions.checkLoggedIn();
+                $(".dropdown-button").dropdown();
         }
     }
 
