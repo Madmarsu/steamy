@@ -45,11 +45,14 @@
                 $(".dropdown-button").dropdown();
         },
         activated(){
-            //console.log("activated")
-            setTimeout(()=>{
-                $(".dropdown-button").dropdown();
-            }, 500)
-            
+            console.log("activated")
+            this.$nextTick(()=>{
+                console.log("Next tick")
+                setTimeout(()=>{
+                    $(".dropdown-button").dropdown();
+                }, 1000)
+                
+            })
         }
     }
 
