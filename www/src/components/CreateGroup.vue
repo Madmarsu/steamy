@@ -11,7 +11,7 @@
                         <label>Game</label>
                     </div>
                     <div class="input-field">
-                        <input id="title" type="text" v-model="title">
+                        <input id="title" type="text" v-model="title" required>
                         <label for="title">Title</label>
                     </div>
                     <div class="input-field col s12">

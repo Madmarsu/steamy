@@ -9,7 +9,7 @@ import { models } from '../config/constants'
 let schema = new Schema({
     title: { type: String, required: true },
     description: { type: String },
-    game: { type: String },
+    game: { type: String, required: true },
     chatHistory: [{ type: ObjectId, ref: models.message.name }],
     // Relations
     members: [{ type: ObjectId, ref: models.user.name }]
