@@ -13,7 +13,7 @@
                 <div class="nav-wrapper">
                     <a href="#" class="brand-logo">Multi Player</a>
                     <router-link v-if="this.$root.$data.store.state.user._id" to="/myprofile" class="brand-logo center">Hello, {{ this.$root.$data.store.state.user.username }}</router-link>
-                    <ul v-if="!this.$root.$data.store.state.user._id" class="right hide-on-med-and-down">
+                    <ul v-cloak v-if="!this.$root.$data.store.state.user._id" class="right hide-on-med-and-down">
                         <li>
                             <router-link to="login">Login</router-link>
                         </li>
@@ -33,10 +33,6 @@
 <script>
     export default {
         name: 'Nav',
-        // mounted: function () {
-        //     $(".dropdown-button").dropdown();
-        // },
-
         methods: {
             logout(){
                 this.$root.$data.store.actions.logout();
@@ -46,6 +42,13 @@
         mounted(){
                 this.$root.$data.store.actions.checkLoggedIn();
                 $(".dropdown-button").dropdown();
+        },
+        activated(){
+            //console.log("activated")
+            setTimeout(()=>{
+                $(".dropdown-button").dropdown();
+            }, 500)
+            
         }
     }
 
@@ -58,4 +61,5 @@
     .menu-padding {
         margin-right: 30px;
     }
+    
 </style>
