@@ -12,8 +12,9 @@
             <nav class="black">
                 <div class="nav-wrapper">
                     <a href="#" class="brand-logo">Multi Player</a>
-                    <router-link v-if="this.$root.$data.store.state.user._id" to="/myprofile" class="brand-logo center">Hello, {{ this.$root.$data.store.state.user.username }}</router-link>
-                    <ul v-cloak v-if="!this.$root.$data.store.state.user._id" class="right hide-on-med-and-down">
+                    <!-- The "Hello username" feature was causing issues on smaller screens
+                        <router-link v-if="this.$root.$data.store.state.user._id" to="/myprofile" class="brand-logo center">Hello, {{ this.$root.$data.store.state.user.username }}</router-link>-->
+                    <ul v-if="!this.$root.$data.store.state.user._id" class="right hide-on-med-and-down">
                         <li>
                             <router-link to="login">Login</router-link>
                         </li>

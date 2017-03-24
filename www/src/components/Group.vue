@@ -2,18 +2,34 @@
   <div>
     <div class="container">
       <div class="card blue-grey">
-        <div class="card-content white-text">
-          <h5>{{ this.$root.$data.store.state.activeGroup.title }}</h5>
-          <blockquote>{{ this.$root.$data.store.state.activeGroup.description }}</blockquote>
-          <div class="right-align">
-            <button class="waves-effect waves-teal btn indigo" @click="leaveGroup">Leave Group</button>
+        <div class="row">
+          <div class="col s12 m8">
+            <div class="card-content white-text">
+              <h5>{{ this.$root.$data.store.state.activeGroup.title }}</h5>
+              <blockquote>{{ this.$root.$data.store.state.activeGroup.description }}</blockquote>
+              <button class="waves-effect waves-teal btn indigo" @click="leaveGroup">Leave Group</button>
+            </div>
           </div>
+
+          <div class="col s12 m4">
+            <!--<div class="card blue-grey">-->
+            <div class="card-content white-text">
+              <h5>Members</h5>
+              <ul>
+                <li v-for="member in this.$root.$data.store.state.activeGroup.members">
+                  <router-link class="page-link" :to="'/profile/' + member._id">{{ member.username }}</router-link>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+
         </div>
+
       </div>
-    </div>
-    <div class="row">
-      <div class="container">
-        <div class="col s10">
+
+      <div class="row">
+        <div class="col s12 m12">
           <div class="card blue-grey">
             <div id="chat">
               <div v-for="message in this.$root.$data.store.state.activeGroup.chatHistory">
@@ -26,25 +42,13 @@
               </div>
             </div>
             <form @submit.prevent="submitMessage" class="row">
-              <div class="input-field col s10">
+              <div class="input-field col s11 m9">
                 <input type="text" v-model="message" class="chatbox">
               </div>
-              <div class="input-field center col s2">
-                <button type="submit" class="waves-effect waves-teal btn indigo" id="submit-button">SEND</button>
+              <div class="input-field center col s12 m2">
+                <button type="submit" class="waves-effect waves-teal btn indigo submit-btn" id="submit-button">SEND</button>
               </div>
             </form>
-          </div>
-        </div>
-        <div class="col s2">
-          <div class="card blue-grey">
-            <div class="card-content white-text">
-              <h5>Members</h5>
-              <ul>
-                <li v-for="member in this.$root.$data.store.state.activeGroup.members">
-                  <router-link class="page-link" :to="'/profile/' + member._id">{{ member.username }}</router-link>
-                </li>
-              </ul>
-            </div>
           </div>
         </div>
 
@@ -121,6 +125,10 @@
     padding-right: 1%;
     overflow: auto;
     color: white;
+  }
+  
+  .submit-btn {
+    margin-bottom: 5%;
   }
   
   .chatbox {
