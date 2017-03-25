@@ -64,6 +64,7 @@ export default {
     setActiveChat(chatId) {
       api('/chat/' + chatId)
         .then(res => {
+          
           state.activeChat = res.data.data;
         })
     },
@@ -91,6 +92,7 @@ export default {
     setActiveGroup(groupId) {
       api('group/' + groupId)
         .then(res => {
+           console.log(res.data.data);
           state.activeGroup = res.data.data;
         })
         .catch(handleError);

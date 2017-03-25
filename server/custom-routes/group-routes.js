@@ -32,6 +32,10 @@ export default {
         reqType: 'put',
         method(req, res, next){
             let action = 'Join group'
+            var opts = [
+                { path: 'chatHistory'}
+                , { path: 'members', select: '_id username avatar steamId' }
+            ]
             Groups.findById(req.params.id)
                 .then(group => {
                     group.members.push(req.session.uid);
@@ -41,7 +45,7 @@ export default {
                             user.groups.push(group._id);
                             user.save()
                                 .then(user => {
-                                    Groups.findById(group._id).populate('chatHistory members')
+                                    Groups.findById(group._id).populate(opts)
                                         .then(group => {
                                             res.send(handleResponse(action, group))
                                         })
@@ -119,11 +123,12 @@ export default {
         reqType: 'get',
         method(req, res, next) {
             let action = 'Go to specific group'
-            Groups.findById(req.params.id).populate('chatHistory members')
+            var opts = [
+                { path: 'chatHistory'}
+                ,{ path: 'members', select: '_id username avatar steamId' }
+            ]
+            Groups.findById(req.params.id).populate(opts)
                 .then(group => {
-                    group.members.forEach(member => {
-                        member.password = null
-                    })
                     if(group.chatHistory.length > 50){
                         group.chatHistory = group.chatHistory.slice(group.chatHistory.length - 50, 50)
                     }

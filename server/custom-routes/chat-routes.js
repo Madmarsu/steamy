@@ -9,7 +9,11 @@ export default {
         reqType: 'get',
         method(req, res, next) {
             let action = 'Go to specific chat'
-            Chats.findById(req.params.id).populate("members chatHistory")
+             var opts = [
+                { path: 'chatHistory'}
+                , { path: 'members', select: '_id username avatar steamId' }
+            ]
+            Chats.findById(req.params.id).populate(opts)
                 .then(chat => {
                     chat.members.forEach(member => {
                         member.password = null
@@ -72,7 +76,11 @@ export default {
         reqType: 'post',
         method(req, res, next) {
             let action = 'Create new chat'
-            Chats.findOne({ $and: [{ members: { $in: [req.session.uid] }},{ members: { $in: [req.params.id] }}] }).populate('members chatHistory')
+             var opts = [
+                { path: 'chatHistory'}
+                , { path: 'members', select: '_id username avatar steamId' }
+            ]
+            Chats.findOne({ $and: [{ members: { $in: [req.session.uid] }},{ members: { $in: [req.params.id] }}] }).populate(opts)
                 .then(chat => {
                     if (!chat) {
                         Chats.create({ members: req.session.uid })

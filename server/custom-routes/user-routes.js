@@ -8,7 +8,7 @@ export default {
         reqType: 'put',
         method(req, res, next) {
             let action = 'Send invite'
-            Users.findById(req.params.id)
+            Users.findById(req.params.id, '_id username games avatar')
                 .then(user => {
                     let exists = false;
                     let sentInvite = req.body
@@ -135,7 +135,7 @@ export default {
         reqType: 'post',
         method(req, res, next) {
             let action = 'Find individual by game'
-            Users.find({ games: { $elemMatch: { name: req.body.game } } })
+            Users.find({ games: { $elemMatch: { name: req.body.game } } }, '_id username avatar')
                 .then(users => {
                     console.log(users);
                     res.send(handleResponse(action, users))
@@ -166,7 +166,7 @@ export default {
                                     secondUser.save()
 
                                         .then(secondUser => {
-                                            Users.findById(req.session.uid).populate('friends groups')
+                                            Users.findById(req.session.uid, '_id username games avatar').populate('friends groups')
                                                 .then(secondUser => {
                                                     secondUser.password = null
                                                     secondUser.friends.forEach(friend => {
@@ -217,7 +217,7 @@ export default {
         reqType: 'get',
         method(req, res, next) {
             let action = "Find another's profile"
-            Users.findById(req.params.id)
+            Users.findById(req.params.id, '_id username games avatar steamId blocked friends')
                 .then(user => {
                     if (user.blocked.indexOf(req.session.uid) > -1) {
                         let puser = {
@@ -228,6 +228,7 @@ export default {
                         res.send(handleResponse(action, puser, "You are not allowed to view this person's full profile."))
                         return
                     }
+                    console.log(user)
                     let ruser = {
                          _id: user._id,
                         username: user.username,
@@ -241,7 +242,7 @@ export default {
                     res.send(handleResponse(action, ruser))
                 })
                 .catch(error => {
-                    return next(handleResponse(action, null, error))
+                    return next(handleResponse(action, {}, error))
                 })
         }
     },
