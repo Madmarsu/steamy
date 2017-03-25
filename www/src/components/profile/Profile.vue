@@ -5,11 +5,20 @@
         <div class="card-content white-text">
           <h4 class="left-align">{{ activeProfile.username }}</h4>
           <div class="right-align">
-            <a class="waves-effect waves-light btn indigo" @click="addFriend" v-if="!isFriend">Add Friend</a>
-            <a class="waves-effect waves-light btn indigo" @click="createChat" v-if="isFriend">Send Message</a>
-            <a class="waves-effect waves-light btn indigo" v-if="isFriend">Add to Group</a>
-            <a class="waves-effect waves-light btn indigo" @click="block" v-if="!isBlocked">Block</a>
-            <a class="waves-effect waves-light btn indigo" @click="unblock" v-if="isBlocked">Remove Block</a>
+            <a class="waves-effect waves-light btn indigo top-bot-marg" @click="addFriend" v-if="!isFriend">Add Friend</a>
+            <a class="waves-effect waves-light btn indigo top-bot-marg" @click="createChat" v-if="isFriend">Send Message</a>
+            <a class="waves-effect waves-light btn indigo top-bot-marg" @click="removeFriend" v-if="isFriend">Remove</a>
+            <a class="waves-effect waves-light btn indigo top-bot-marg" @click="block" v-if="!isBlocked">Block</a>
+            <a class="waves-effect waves-light btn indigo top-bot-marg" @click="unblock" v-if="isBlocked">Remove Block</a>
+            <a class="waves-effect waves-light btn indigo top-bot-marg" @click="toggleAddGroup" v-if="isFriend"><span v-if="!addGroup">Add to Group</span><span v-if="addGroup">Close Form</span></a>
+          </div>
+          <div v-show="addGroup">
+            <form @submit.prevent="addToGroup">
+              <select id="selected">
+                <option v-for="group in this.$root.$data.store.state.user.groups" :value="group._id">{{ group.title }}</option>
+              </select>
+              <button class="waves-effect waves-teal btn indigo" type="submit">Add to Group</button>
+            </form>
           </div>
         </div>
       </div>
@@ -17,7 +26,7 @@
     <div class="card blue-grey">
       <div class="card-content white-text">
         <div class="row">
-          <div class="col s6">
+          <div class="col s12 m6">
             <div>
               <img v-if="activeProfile.steamId" :src="activeProfile.avatar" class="avatar">
               <img v-if="!activeProfile.steamId" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=200%C3%97200&w=200&h=200" class="avatar">
@@ -26,7 +35,7 @@
               {{ activeProfile.bio }}
             </div>
           </div>
-          <div class="col s6">
+          <div class="col s12 m6">
             <h5>{{ activeProfile.username }}'s Games</h5>
             <div class="scrollable">
               <ul>
@@ -42,19 +51,20 @@
         </div>
       </div>
     </div>
-    <div class="col s6">
+    <!--<div class="col s6">
       <div class="row">
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
 
 <script>
   export default {
-    name: 'my-profile',
+    name: 'profile',
     data() {
       return {
-        userId: ""
+        userId: "",
+        addGroup: false
       }
     },
     computed: {
@@ -79,12 +89,12 @@
         }
       },
       isBlocked() {
-         let user = this.$root.$data.store.state.user;
-        if (!user){
+        let user = this.$root.$data.store.state.user;
+        if (!user) {
           return false
         }
 
-        if (!user.blocked){
+        if (!user.blocked) {
           return false
         }
         console.log(user)
@@ -92,9 +102,23 @@
       }
     },
     mounted() {
+      $('select').material_select();
       this.$root.$data.store.actions.setActiveProfile(this.$route.params.id);
     },
     methods: {
+      addToGroup(){
+        var select = document.getElementById('selected');
+        console.log(select.value);
+        this.$root.$data.store.actions.addToGroup(select.value, this.$route.params.id);
+        this.addGroup = !this.addGroup;
+      },
+      removeFriend() {
+        this.$root.$data.store.actions.removeFriend(this.$route.params.id);
+      },
+      toggleAddGroup() {
+        this.addGroup = !this.addGroup;
+        $('select').material_select();
+      },
       addFriend() {
         this.$root.$data.store.actions.addFriend(this.$route.params.id);
       },
@@ -117,10 +141,10 @@
       createChat() {
         this.$root.$data.store.actions.createChat(this.$route.params.id);
       },
-      block(){
+      block() {
         this.$root.$data.store.actions.blockUser(this.$route.params.id);
       },
-      unblock(){
+      unblock() {
         this.$root.$data.store.actions.unBlockUser(this.$route.params.id);
       }
     }
@@ -135,6 +159,11 @@
     height: 200px;
     border-radius: 5%;
     margin: 10px;
+  }
+  
+  .top-bot-marg {
+    margin-top: 2%;
+    margin-bottom: 2%;
   }
   
   .flex-container {

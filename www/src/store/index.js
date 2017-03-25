@@ -4,29 +4,39 @@ import io from 'socket.io-client'
 
 let socket = io('http://localhost:3000')
 let api = axios.create({
-  baseURL: 'http://localhost:3000/api/',
-  timeout: 5000,
-  withCredentials: true
+    baseURL: 'http://localhost:3000/api/',
+    timeout: 5000,
+    withCredentials: true
 })
 
 let state = {
-  user: {},
-  error: {},
-  userResults: [],
-  groupResults: [],
-  activeProfile: {},
-  activeGroup: {},
-  activeChat: {}
+    user: {},
+    error: {},
+    userResults: [],
+    groupResults: [],
+    activeProfile: {},
+    activeGroup: {},
+    activeChat: {}
 }
 
 let handleError = (err) => {
-  state.error = err
-  console.log(err);
+    state.error = err
+    console.log(err);
 }
 
 export default {
   state,
   actions: {
+      removeFriend(profileId){
+
+            api.put('/user/friends/' + profileId)
+            .then(res => {
+                // state.user = res.data.data
+                this.checkLoggedIn()
+                Materialize.toast('Friend has been removed', 1000)
+            })
+            .catch(handleError)
+        },
     listenForMessage() {
       socket.on('message', res => {
         console.log(res.data)
@@ -84,6 +94,19 @@ export default {
           state.activeGroup = res.data.data;
         })
         .catch(handleError);
+    },
+    addToGroup(groupId, profileId){
+      api.put('profile/' + profileId + '/groupadd', {
+        groupId: groupId
+      }) 
+        .then(res => {
+          console.log(res.data.data);
+          if(res.data.data._id){
+            Materialize.toast('Added to group', 1000);
+          } else {
+            Materialize.toast(res.data.data.message, 1000);
+          }
+        })
     },
     joinGroup(group) {
       api.put('group/' + group._id + '/join')
@@ -153,7 +176,7 @@ export default {
           .then(res => {
             if (res.data.error) {
                 Materialize.toast(res.data.error, 5000, "errorToast");
-                return  
+                return
             }
           state.activeProfile = res.data.data;
         })
@@ -175,7 +198,7 @@ export default {
         .then(res => {
           if (res.data.data) {
               state.user = res.data.data;
-            console.log(state.user)  
+            console.log(state.user)
             if (!state.user.steamId) {
               router.push("myprofile")
             }
@@ -194,6 +217,7 @@ export default {
         .then(res => {
           if (res.data.data) {
             state.user = res.data.data;
+            router.push({path: '/myprofile'})
           } else {
             Materialize.toast('That username is already taken.', 2000, "errorToast");
           }
@@ -244,10 +268,10 @@ export default {
           .then(res => {
             if (res.data.error) {
                 Materialize.toast(res.data.error, 1000, "errorToast");
-                return  
+                return
             }
             state.user.blocked = res.data.data;
-          console.log(state.user.blocked)  
+          console.log(state.user.blocked)
           Materialize.toast(res.data.msg, 1000);
         })
         .catch(handleError);
@@ -257,12 +281,12 @@ export default {
           .then(res => {
              if (res.data.error) {
                 Materialize.toast(res.data.error, 1000, "errorToast");
-                return  
+                return
             }
           state.user.blocked = res.data.data;
           Materialize.toast(res.data.msg, 1000);
         })
         .catch(handleError);
     }
-  }
+}
 }

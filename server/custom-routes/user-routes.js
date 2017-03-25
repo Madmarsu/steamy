@@ -41,16 +41,26 @@ export default {
             let action = 'Accept invite'
             Users.findById(req.session.uid)
                 .then(user => {
-                    user.friends.push(req.body.userId)
-                    let index = user.invites.indexOf(req.body)
-                    user.invites.splice(index, 1)
-                    user.save()
-                    Users.findById(req.body.userId)
-                        .then(friendUser => {
-                            friendUser.friends.push(req.session.uid)
-                            friendUser.save()
-                            res.send(handleResponse(action, user))
-                        })
+                    let exists;
+                    user.friends.forEach(friend => {
+                        if (friend == req.body.userId) {
+                            exists = true
+                        }
+                    })
+                    if (exists) {
+                        res.send(handleResponse(action, { message: 'You are already friends' }))
+                    } else {
+                        user.friends.push(req.body.userId)
+                        let index = user.invites.indexOf(req.body)
+                        user.invites.splice(index, 1)
+                        user.save()
+                        Users.findById(req.body.userId)
+                            .then(friendUser => {
+                                friendUser.friends.push(req.session.uid)
+                                friendUser.save()
+                                res.send(handleResponse(action, user))
+                            })
+                    }
                 })
                 .catch(error => {
                     return next(handleResponse(action, null, error))
@@ -74,21 +84,32 @@ export default {
                 })
         }
     },
+
     addToGroup: {
         path: '/profile/:id/groupadd',
         reqType: 'put',
         method(req, res, next) {
             let action = 'Add to group'
-            Users.findById(req.params.id)
+            Users.findById(req.params.id).populate('groups')
                 .then(user => {
-                    user.groups.push(req.body.groupId)
-                    user.save()
-                    Groups.findById(req.body.groupId)
-                        .then(group => {
-                            group.members.push(req.params.id)
-                            group.save()
-                            res.send(handleResponse(action, group))
-                        })
+                    let exists = false;
+                    user.groups.forEach(group => {
+                        if (group._id == req.body.groupId) {
+                            exists = true;
+                        }
+                    })
+                    if (exists) {
+                        res.send(handleResponse(action, { message: 'This user is already in that group' }))
+                    } else {
+                        user.groups.push(req.body.groupId)
+                        user.save()
+                        Groups.findById(req.body.groupId)
+                            .then(group => {
+                                group.members.push(req.params.id)
+                                group.save()
+                                res.send(handleResponse(action, group))
+                            })
+                    }
                 })
                 .catch(error => {
                     return next(handleResponse(action, null, error))
@@ -118,6 +139,45 @@ export default {
                 .then(users => {
                     console.log(users);
                     res.send(handleResponse(action, users))
+                })
+                .catch(error => {
+                    return next(handleResponse(action, null, error))
+                })
+        }
+    },
+    deleteFriend: {
+        path: '/user/friends/:id',
+        reqType: 'put',
+        method(req, res, next) {
+            console.log('delete friend route')
+            let action = 'Remove friend'
+            Users.findById(req.params.id)
+                .then(firstUser => {
+                    console.log('this is what it is', firstUser.friends)
+                    let index = firstUser.friends.indexOf(req.session.uid)
+                    firstUser.friends.splice(index, 1)
+                    firstUser.save()
+                        .then(secondUser => {
+                            Users.findById(req.session.uid)
+                                .then(secondUser => {
+                                    console.log(secondUser)
+                                    let index = secondUser.friends.indexOf(req.params.id)
+                                    secondUser.friends.splice(index, 1)
+                                    secondUser.save()
+
+                                        .then(secondUser => {
+                                            Users.findById(req.session.uid).populate('friends groups')
+                                                .then(secondUser => {
+                                                    secondUser.password = null
+                                                    secondUser.friends.forEach(friend => {
+                                                        friend.password = null
+                                                    })
+                                                    res.send(handleResponse(action, secondUser))
+                                                })
+
+                                        })
+                                })
+                        })
                 })
                 .catch(error => {
                     return next(handleResponse(action, null, error))
@@ -155,15 +215,11 @@ export default {
     viewProfile: {
         path: '/profile/:id',
         reqType: 'get',
-        method(req, res, next){
+        method(req, res, next) {
             let action = "Find another's profile"
             Users.findById(req.params.id)
                 .then(user => {
-<<<<<<< HEAD
-=======
->>>>>>> 6f87f5705e058b8950154f857df643448123debb
-                    if (user.blocked.indexOf(req.session.uid) > -1)
-                    {
+                    if (user.blocked.indexOf(req.session.uid) > -1) {
                         res.send(handleResponse(action, {}, "You are not allowed to view this person's profile."))
                         return
                     }
@@ -184,14 +240,13 @@ export default {
             Users.findById(req.session.uid)
                 .then(user => {
 
-                    if (user.blocked.indexOf(id) > -1)
-                    {
-                        res.send(handleResponse(action, null, "This user is already blocked!"))
+                    if (user.blocked.indexOf(id) > -1) {
+                        res.send(handleResponse(action, [], "This user is already blocked!"))
                         return
-                    }    
+                    }
                     user.blocked.push(id)
                     user.save()
-                    res.send(handleMsgResponse(action,"User has been blocked!", user.blocked))
+                    res.send(handleMsgResponse(action, "User has been blocked!", user.blocked))
                 })
                 .catch(error => {
                     return next(handleResponse(action, null, error))
@@ -207,11 +262,10 @@ export default {
             Users.findById(req.session.uid)
                 .then(user => {
 
-                    if (user.blocked.indexOf(id) < -1)
-                    {
-                        res.send(handleResponse(action, null, "This user is not blocked!"))
+                    if (user.blocked.indexOf(id) < -1) {
+                        res.send(handleResponse(action, [], "This user is not blocked!"))
                         return
-                    }    
+                    }
                     var i = user.blocked.indexOf(id)
                     user.blocked.splice(i, 1)
                     user.save()
