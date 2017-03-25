@@ -152,7 +152,7 @@ export default {
       api('profile/' + profileId)
           .then(res => {
             if (res.data.error) {
-                Materialize.toast(res.data.error, 1000, "errorToast");
+                Materialize.toast(res.data.error, 5000, "errorToast");
                 return  
             }
           state.activeProfile = res.data.data;
