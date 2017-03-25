@@ -204,6 +204,7 @@ export default {
         .then(res => {
           if (res.data.data) {
             state.user = res.data.data;
+            router.push({path: '/myprofile'})
           } else {
             Materialize.toast('That username is already taken.', 2000, "errorToast");
           }
