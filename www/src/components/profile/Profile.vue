@@ -8,8 +8,8 @@
             <a class="waves-effect waves-light btn indigo" @click="addFriend" v-if="!isFriend">Add Friend</a>
             <a class="waves-effect waves-light btn indigo" @click="createChat" v-if="isFriend">Send Message</a>
             <a class="waves-effect waves-light btn indigo" v-if="isFriend">Add to Group</a>
-            <a class="waves-effect waves-light btn indigo" v-if="!isBlocked">Block</a>
-            <a class="waves-effect waves-light btn indigo" v-if="isBlocked">Remove Block</a>
+            <a class="waves-effect waves-light btn indigo" @click="block" v-if="!isBlocked">Block</a>
+            <a class="waves-effect waves-light btn indigo" @click="unblock" v-if="isBlocked">Remove Block</a>
           </div>
         </div>
       </div>
@@ -108,6 +108,12 @@
       },
       createChat() {
         this.$root.$data.store.actions.createChat(this.$route.params.id);
+      },
+      block(){
+        this.$root.$data.store.actions.blockUser(this.$route.params.id);
+      },
+      unblock(){
+        this.$root.$data.store.actions.unBlockUser(this.$route.params.id);
       }
     }
   }
