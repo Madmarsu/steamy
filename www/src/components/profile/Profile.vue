@@ -55,7 +55,6 @@
     data() {
       return {
         userId: ""
-
       }
     },
     computed: {
@@ -80,7 +79,16 @@
         }
       },
       isBlocked() {
-        return false
+         let user = this.$root.$data.store.state.user;
+        if (!user){
+          return false
+        }
+
+        if (!user.blocked){
+          return false
+        }
+        console.log(user)
+        return user.blocked.indexOf(this.activeProfile._id) > -1
       }
     },
     mounted() {

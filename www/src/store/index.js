@@ -150,7 +150,11 @@ export default {
     },
     setActiveProfile(profileId) {
       api('profile/' + profileId)
-        .then(res => {
+          .then(res => {
+            if (res.data.error) {
+                Materialize.toast(res.data.error, 1000, "errorToast");
+                return  
+            }
           state.activeProfile = res.data.data;
         })
         .catch(handleError);
@@ -170,7 +174,8 @@ export default {
         })
         .then(res => {
           if (res.data.data) {
-            state.user = res.data.data;
+              state.user = res.data.data;
+            console.log(state.user)  
             if (!state.user.steamId) {
               router.push("myprofile")
             }
@@ -190,7 +195,7 @@ export default {
           if (res.data.data) {
             state.user = res.data.data;
           } else {
-            Materialize.toast('That username is already taken.', 2000);
+            Materialize.toast('That username is already taken.', 2000, "errorToast");
           }
         })
         .catch(handleError)
@@ -200,7 +205,7 @@ export default {
         .then(res => {
           state.user = {};
           Materialize.toast(res.data.message, 1000);
-          router.push("Home")
+          router.push({path: "/"})
         })
         .catch(handleError);
     },
