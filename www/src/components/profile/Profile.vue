@@ -7,10 +7,10 @@
           <div class="right-align">
             <a class="waves-effect waves-light btn indigo top-bot-marg" @click="addFriend" v-if="!isFriend">Add Friend</a>
             <a class="waves-effect waves-light btn indigo top-bot-marg" @click="createChat" v-if="isFriend">Send Message</a>
+            <a class="waves-effect waves-light btn indigo top-bot-marg" @click="toggleAddGroup" v-if="isFriend"><span v-if="!addGroup">Add to Group</span><span v-if="addGroup">Close Form</span></a>
             <a class="waves-effect waves-light btn indigo top-bot-marg" @click="removeFriend" v-if="isFriend">Remove</a>
             <a class="waves-effect waves-light btn indigo top-bot-marg" @click="block" v-if="!isBlocked">Block</a>
             <a class="waves-effect waves-light btn indigo top-bot-marg" @click="unblock" v-if="isBlocked">Remove Block</a>
-            <a class="waves-effect waves-light btn indigo top-bot-marg" @click="toggleAddGroup" v-if="isFriend"><span v-if="!addGroup">Add to Group</span><span v-if="addGroup">Close Form</span></a>
           </div>
           <div v-show="addGroup">
             <form @submit.prevent="addToGroup">
