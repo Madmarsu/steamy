@@ -176,9 +176,10 @@ export default {
           .then(res => {
             if (res.data.error) {
                 Materialize.toast(res.data.error, 5000, "errorToast");
-                return
+                
             }
-          state.activeProfile = res.data.data;
+            state.activeProfile = res.data.data;
+          console.log("activeProfile", state.activeProfile)  
         })
         .catch(handleError);
     },

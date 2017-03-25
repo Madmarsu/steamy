@@ -220,11 +220,25 @@ export default {
             Users.findById(req.params.id)
                 .then(user => {
                     if (user.blocked.indexOf(req.session.uid) > -1) {
-                        res.send(handleResponse(action, {}, "You are not allowed to view this person's profile."))
+                        let puser = {
+                            _id: user._id,
+                            username: user.username,
+                            avatar: user.avatar,
+                        }
+                        res.send(handleResponse(action, puser, "You are not allowed to view this person's full profile."))
                         return
                     }
-                    user.password = null;
-                    res.send(handleResponse(action, user))
+                    let ruser = {
+                         _id: user._id,
+                        username: user.username,
+                        avatar: user.avatar,
+                        games: user.games
+                    }
+
+                     if (user.friends.indexOf(req.session.uid) > -1) {
+                        ruser.steamId = user.steamId
+                    }
+                    res.send(handleResponse(action, ruser))
                 })
                 .catch(error => {
                     return next(handleResponse(action, null, error))
