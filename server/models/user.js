@@ -17,7 +17,8 @@ let schema = new Schema({
     // Relations
     friends: [{ type: ObjectId, ref: models.user.name }],
     chats: [{ type: ObjectId, ref: models.chat.name }],
-    groups: [{ type: ObjectId, ref: models.group.name }]
+    groups: [{ type: ObjectId, ref: models.group.name }],
+    blocked: [{ type: ObjectId, ref: models.user.name }],
 })
 
 schema.plugin(uniqueValidator);
