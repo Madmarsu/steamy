@@ -159,9 +159,10 @@ export default {
             let action = "Find another's profile"
             Users.findById(req.params.id)
                 .then(user => {
-                    if (user.blocked && user.blocked.includes(req.session.uid))
+                    console.log(user.blocked, user.blocked.includes(req.session.uid))
+                    if (user.blocked.indexOf(req.session.uid) > -1)
                     {
-                        res.send(handleResponse(action, null, "You are not allowed to view this person's profile."))
+                        res.send(handleResponse(action, {}, "You are not allowed to view this person's profile."))
                         return
                     }
                     user.password = null;
