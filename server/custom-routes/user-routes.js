@@ -180,9 +180,15 @@ export default {
             let action = "Block Communications with user " + id
             Users.findById(req.session.uid)
                 .then(user => {
+
+                    if (!user.blocked.includes(id))
+                    {
+                        res.send(handleResponse(action, null, "This user is already blocked!"))
+                        return
+                    }    
                     user.blocked.push(id)
                     user.save()
-                    res.send(handleResponse(action, user))
+                    res.send(handleMsgResponse(action,"User has been blocked!", user))
                 })
                 .catch(error => {
                     return next(handleResponse(action, null, error))
@@ -218,6 +224,18 @@ export default {
 function handleResponse(action, data, error) {
     var response = {
         action: action,
+        data: data
+    }
+    if (error) {
+        response.error = error;
+    }
+    return response;
+}
+
+function handleMsgResponse(action, msg, data, error) {
+    var response = {
+        action: action,
+        msg: msg,
         data: data
     }
     if (error) {
