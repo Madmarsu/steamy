@@ -2,7 +2,7 @@
     <div>
         <div class="parallax-container">
             <div class="parallax">
-                <img class="parallax-bg" src="https://cdn0.vox-cdn.com/uploads/chorus_image/image/53522233/Nintendo_Switch_2.0.0.jpg">
+                <img class="parallax-bg" src="http://www.quiteenjoy.com/wp-content/uploads/2012/02/Nes-Grey-screen-feature1.png">
             </div>
         </div>
         <div class="section blue-grey darken-2 center">

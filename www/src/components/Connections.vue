@@ -10,14 +10,14 @@
                             <p v-if="this.$root.$data.store.state.user.invites[0]">You've got new invites!</p>
                             <ul>
                                 <li v-for="invite in this.$root.$data.store.state.user.invites">
-                                    <router-link :to="'/profile/' + invite.userId">{{ invite.username }}</router-link> would like to be your friend! <button @click="acceptFriend(invite)"
+                                    <router-link class="page-link" :to="'/profile/' + invite.userId">{{ invite.username }}</router-link> would like to be your friend! <button @click="acceptFriend(invite)"
                                         class="waves-effect waves-teal indigo btn">Accept</button> <button @click="declineFriend(invite)"
                                         class="waves-effect waves-teal indigo btn">Decline</button></li>
                             </ul>
-                            <div class="center">
-                                <router-link to="/search" class="waves-teal waves-effect indigo btn">Find Connections</router-link>
-                                <router-link to="/creategroup" class="waves-teal waves-effect indigo btn">Create Group</router-link>
-                            </div>
+                            <!--<div class="center">-->
+                                <router-link to="/search" class="waves-teal waves-effect indigo btn left">Find Connections</router-link>
+                                <router-link to="/creategroup" class="waves-teal waves-effect indigo btn right">Create Group</router-link>
+                            <!--</div>-->
                         </div>
                     </div>
                 </div>

@@ -62,11 +62,20 @@
     box-shadow: 0 1px 0 0 #b4b0ff;
   }
   
-  .input-field textarea:focus+label {
+  .input-field input[type=password]:focus+label {
     color: #b4b0ff;
   }
   
-  .input-field textarea:focus {
+  .input-field input[type=password]:focus {
+    border-bottom: 1px solid #b4b0ff;
+    box-shadow: 0 1px 0 0 #b4b0ff;
+  }
+
+  textarea.materialize-textarea:focus:not([readonly])+label {
+    color: #b4b0ff;
+  }
+  
+  textarea.materialize-textarea:focus:not([readonly]) {
     border-bottom: 1px solid #b4b0ff;
     box-shadow: 0 1px 0 0 #b4b0ff;
   }
