@@ -9,8 +9,8 @@
             <a class="waves-effect waves-light btn indigo" @click="createChat" v-if="isFriend">Send Message</a>
             <a class="waves-effect waves-light btn indigo" @click="removeFriend" v-if="isFriend">Remove</a>
             <a class="waves-effect waves-light btn indigo" v-if="isFriend">Add to Group</a>
-            <a class="waves-effect waves-light btn indigo" v-if="!isBlocked">Block</a>
-            <a class="waves-effect waves-light btn indigo" v-if="isBlocked">Remove Block</a>
+            <a class="waves-effect waves-light btn indigo" @click="block" v-if="!isBlocked">Block</a>
+            <a class="waves-effect waves-light btn indigo" @click="unblock" v-if="isBlocked">Remove Block</a>
           </div>
         </div>
       </div>
@@ -56,7 +56,6 @@
     data() {
       return {
         userId: ""
-
       }
     },
     computed: {
@@ -81,7 +80,16 @@
         }
       },
       isBlocked() {
-        return false
+         let user = this.$root.$data.store.state.user;
+        if (!user){
+          return false
+        }
+
+        if (!user.blocked){
+          return false
+        }
+        console.log(user)
+        return user.blocked.indexOf(this.activeProfile._id) > -1
       }
     },
     mounted() {
@@ -112,6 +120,12 @@
       },
       createChat() {
         this.$root.$data.store.actions.createChat(this.$route.params.id);
+      },
+      block(){
+        this.$root.$data.store.actions.blockUser(this.$route.params.id);
+      },
+      unblock(){
+        this.$root.$data.store.actions.unBlockUser(this.$route.params.id);
       }
     }
   }

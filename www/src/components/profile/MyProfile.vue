@@ -8,11 +8,11 @@
       </div>
     </div>
     <div class="row">
-      <div class="col s9">
+      <div class="col s12 m12 l9">
         <div class="card blue-grey">
           <div class="card-content white-text">
             <div class="row">
-              <div class="col s6">
+              <div class="col s12 m6 l6">
                 <div class="center">
                   <img v-if="user.steamId" :src="user.avatar" class="avatar">
                   <img v-if="!user.steamId" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=200%C3%97200&w=200&h=200" class="avatar">
@@ -30,7 +30,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col s6">
+              <div class="col s12 m6">
                 <div class="center">
                   <img @click="linkSteam" src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png" class="hoverable" v-if="!linkedSteam">
                   <a class="waves-effect waves-light btn indigo" @click="updateGames" v-if="linkedSteam">Update Games</a>
@@ -52,43 +52,43 @@
           </div>
         </div>
       </div>
-      <div class="col s3">
+      <div class="row">
+      <div class="col s12 m6 l3">
         <div class="card blue-grey">
           <div class="card-content white-text">
-            <h5>Friends</h5>
+            <h5 class="center">Friends</h5>
             <p v-if="!user.friends[0]">You have no friends. SAD!</p>
             <ul v-if="user.friends[0]">
               <li v-for="friend in user.friends">
-                <router-link :to="'/profile/' + friend._id">{{ friend.username }}</router-link>
+                <router-link class="page-link" :to="'/profile/' + friend._id">{{ friend.username }}</router-link>
               </li>
             </ul>
           </div>
+    </div>
         </div>
+    <div class="col s12 m6 l3">
         <div class="card blue-grey">
           <div class="card-content white-text">
             <h5 class="center">Groups</h5>
             <p v-if="!this.$root.$data.store.state.user.groups[0]">You're in no groups. SAD!</p>
-            <table v-if="this.$root.$data.store.state.user.groups[0]" class="bordered">
-              <thead>
+            <ul v-if="this.$root.$data.store.state.user.groups[0]" class="bordered">
+              <!--<thead>
                 <tr></tr>
-              </thead>
+              </thead>-->
               <tbody>
-                <tr v-for="group in this.$root.$data.store.state.user.groups">
+                <li v-for="group in this.$root.$data.store.state.user.groups">
                   <td>
-                    <router-link :to="'/group/' + group._id">{{ group.title }}</router-link>
+                    <router-link class="page-link" :to="'/group/' + group._id">{{ group.title }}</router-link>
                   </td>
-                  <td>{{ group.game }}</td>
-                </tr>
+                  <!--<td>{{ group.game }}</td>-->
+                </li>
               </tbody>
-            </table>
+            </ul>
           </div>
         </div>
       </div>
     </div>
-    <div class="col s6">
-      <div class="row">
       </div>
-    </div>
   </div>
 </template>
 

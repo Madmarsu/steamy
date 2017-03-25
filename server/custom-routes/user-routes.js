@@ -205,12 +205,67 @@ export default {
     viewProfile: {
         path: '/profile/:id',
         reqType: 'get',
-        method(req, res, next) {
-            let action = 'Find another\'s profile'
+        method(req, res, next){
+            let action = "Find another's profile"
             Users.findById(req.params.id)
                 .then(user => {
+<<<<<<< HEAD
+=======
+>>>>>>> 6f87f5705e058b8950154f857df643448123debb
+                    if (user.blocked.indexOf(req.session.uid) > -1)
+                    {
+                        res.send(handleResponse(action, {}, "You are not allowed to view this person's profile."))
+                        return
+                    }
                     user.password = null;
                     res.send(handleResponse(action, user))
+                })
+                .catch(error => {
+                    return next(handleResponse(action, null, error))
+                })
+        }
+    },
+    blockUser: {
+        path: '/profile/:id/block',
+        reqType: 'get',
+        method(req, res, next) {
+            let id = req.params.id
+            let action = "Block Communications with user " + id
+            Users.findById(req.session.uid)
+                .then(user => {
+
+                    if (user.blocked.indexOf(id) > -1)
+                    {
+                        res.send(handleResponse(action, null, "This user is already blocked!"))
+                        return
+                    }    
+                    user.blocked.push(id)
+                    user.save()
+                    res.send(handleMsgResponse(action,"User has been blocked!", user.blocked))
+                })
+                .catch(error => {
+                    return next(handleResponse(action, null, error))
+                })
+        }
+    },
+    unBlockUser: {
+        path: '/profile/:id/unblock',
+        reqType: 'get',
+        method(req, res, next) {
+            let id = req.params.id
+            let action = "Un Block Communications with user " + id
+            Users.findById(req.session.uid)
+                .then(user => {
+
+                    if (user.blocked.indexOf(id) < -1)
+                    {
+                         res.send(handleResponse(action, null, "This user is not blocked!"))
+                        return
+                    }    
+                    var i = user.blocked.indexOf(id)
+                    user.blocked.splice(i, 1)
+                    user.save()
+                    res.send(handleMsgResponse(action, "User has been unblocked", user.blocked))
                 })
                 .catch(error => {
                     return next(handleResponse(action, null, error))
@@ -222,6 +277,18 @@ export default {
 function handleResponse(action, data, error) {
     var response = {
         action: action,
+        data: data
+    }
+    if (error) {
+        response.error = error;
+    }
+    return response;
+}
+
+function handleMsgResponse(action, msg, data, error) {
+    var response = {
+        action: action,
+        msg: msg,
         data: data
     }
     if (error) {
