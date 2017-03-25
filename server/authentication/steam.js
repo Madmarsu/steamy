@@ -1,7 +1,8 @@
 import passport from "passport"
 import SteamStrategy from "../lib/passport-steam"
 import {
-    steam
+    steam,
+    clientURL
 } from "../config/constants"
 import Users from "../models/user.js"
 import axios from "axios"
@@ -49,13 +50,13 @@ router.get('/steam/auth/return',
     }),
     function (req, res) {
         console.log("Steam User Authenticated", req.session.uid);
-        res.redirect("http://localhost:8080/")
+        res.redirect(clientURL + "#/myProfile")
     });
 
 router.get('/steam/update', function (req, res) {
     Users.findById(req.session.uid)
         .then(user => {
-            steamApi('GetOwnedGames/v0001/?key=' + steam.apiKey + '&steamid=' + user._id + '&include_played_free_games=1&include_appinfo=1&format=json')
+            steamApi('GetOwnedGames/v0001/?key=' + steam.apiKey + '&steamid=' + user.steamId + '&include_played_free_games=1&include_appinfo=1&format=json')
                 .then(data => {
                     Users.findByIdAndUpdate(req.session.uid, {
                         $set: {
