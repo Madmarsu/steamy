@@ -57,7 +57,7 @@
         <div class="card blue-grey">
           <div class="card-content white-text">
             <h5 class="center">Friends</h5>
-            <p v-if="!user.friends[0]">You have no friends. SAD!</p>
+            <p v-if="!user.friends[0]">No friends yet, go get some!</p>
             <ul v-if="user.friends[0]">
               <li v-for="friend in user.friends">
                 <router-link class="page-link" :to="'/profile/' + friend._id">{{ friend.username }}</router-link>
@@ -70,7 +70,7 @@
         <div class="card blue-grey">
           <div class="card-content white-text">
             <h5 class="center">Groups</h5>
-            <p v-if="!this.$root.$data.store.state.user.groups[0]">You're in no groups. SAD!</p>
+            <p v-if="!this.$root.$data.store.state.user.groups[0]">No groups yet. Find groups matching games in your profile, or make your own!</p>
             <ul v-if="this.$root.$data.store.state.user.groups[0]" class="bordered">
               <!--<thead>
                 <tr></tr>
