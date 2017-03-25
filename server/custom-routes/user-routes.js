@@ -159,11 +159,53 @@ export default {
             let action = "Find another's profile"
             Users.findById(req.params.id)
                 .then(user => {
-                    if (user.blocked && user.blocked.includes(req.session.user.userId))
+                    if (user.blocked && user.blocked.includes(req.session.uid))
                     {
                         res.send(handleResponse(action, null, "You are not allowed to view this person's profile."))
+                        return
                     }
                     user.password = null;
+                    res.send(handleResponse(action, user))
+                })
+                .catch(error => {
+                    return next(handleResponse(action, null, error))
+                })
+        }
+    },
+    blockUser: {
+        path: '/profile/:id/block',
+        reqType: 'get',
+        method(req, res, next) {
+            let id = req.params.id
+            let action = "Block Communications with user " + id
+            Users.findById(req.session.uid)
+                .then(user => {
+                    user.blocked.push(id)
+                    user.save()
+                    res.send(handleResponse(action, user))
+                })
+                .catch(error => {
+                    return next(handleResponse(action, null, error))
+                })
+        }
+    },
+    unBlockUser: {
+        path: '/profile/:id/unblock',
+        reqType: 'get',
+        method(req, res, next) {
+            let id = req.params.id
+            let action = "Un Block Communications with user " + id
+            Users.findById(req.session.uid)
+                .then(user => {
+
+                    if (!user.blocked.includes(id))
+                    {
+                         res.send(handleResponse(action, null, "This user is not blocked!"))
+                        return
+                    }    
+                    var i = user.blocked.indexOf(id)
+                    user.blocked.splice(i, 1)
+                    user.save()
                     res.send(handleResponse(action, user))
                 })
                 .catch(error => {
