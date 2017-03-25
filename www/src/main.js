@@ -16,12 +16,34 @@ let vue = new Vue({
   data: {
     store
   },
+  methods: {
+    loadNavBar() {
+      $(".dropdown-button").dropdown();
+    }
+  },
   router,
   template: '<App/>',
   components: { App },
- })
+  watch: {
+    '$route' (to, from) {
+      // react to route changes...
+      $(".dropdown-button").dropdown();
+    }
+  }
+})
+
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+vue.loadNavBar()
 router.beforeEach((to, from, next) => {
-  if (from.name === "MyProfile" && !vue.$data.store.state.user.steamId) {
+  console.log(to.name)
+  if (from.name === "MyProfile" && to.name != "Logout" && !isEmpty(vue.$data.store.state.user) && !vue.$data.store.state.user.steamId) {
+    Materialize.toast('Please link your Steam account to use the rest of the site!', 1000);
     next(false)
     return
   }

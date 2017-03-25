@@ -32,8 +32,9 @@
               </div>
               <div class="col s6">
                 <div class="center">
-                  <img @click="linkSteam" src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png" class="hoverable">
-                  <p v-if="user.steamId"><sup>*To update your avatar or your games library, simply sign in through Steam again.</sup></p>
+                  <img @click="linkSteam" src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_01.png" class="hoverable" v-if="!linkedSteam">
+                  <a class="waves-effect waves-light btn indigo" @click="updateGames" v-if="linkedSteam">Update Games</a>
+                  <!-- <p v-if="user.steamId"><sup>*To update your avatar or your games library, simply sign in through Steam again.</sup></p> -->
                   <h5>{{ user.username }}'s Games</h5>
                 </div>
                 <div class="scrollable">
@@ -105,6 +106,9 @@
     computed: {
       user() {
         return this.$root.$data.store.state.user;
+      },
+      linkedSteam() {
+        return this.$root.$data.store.state.user.steamId;
       }
     },
     mounted() {

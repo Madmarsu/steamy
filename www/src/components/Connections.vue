@@ -81,7 +81,7 @@
 
             }
         },
-        mounted: function () {
+        mounted() {
             let vue = this;
             $(".dropdown-button").dropdown();
             this.$root.$data.store.actions.checkLoggedIn();
