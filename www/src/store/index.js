@@ -129,7 +129,7 @@ export default {
                 userId: state.user._id
             })
                 .then(res => {
-                    Materialize.toast('Friend request sent', 1000);
+                    Materialize.toast(res.data.data.message, 1000);
                 })
         },
         acceptFriend(invite){
