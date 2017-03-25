@@ -95,6 +95,19 @@ export default {
         })
         .catch(handleError);
     },
+    addToGroup(groupId, profileId){
+      api.put('profile/' + profileId + '/groupadd', {
+        groupId: groupId
+      }) 
+        .then(res => {
+          console.log(res.data.data);
+          if(res.data.data._id){
+            Materialize.toast('Added to group', 1000);
+          } else {
+            Materialize.toast(res.data.data.message, 1000);
+          }
+        })
+    },
     joinGroup(group) {
       api.put('group/' + group._id + '/join')
         .then(res => {
