@@ -209,7 +209,7 @@ export default {
 
                     if (user.blocked.indexOf(id) < -1)
                     {
-                         res.send(handleResponse(action, null, "This user is not blocked!"))
+                        res.send(handleResponse(action, null, "This user is not blocked!"))
                         return
                     }    
                     var i = user.blocked.indexOf(id)
