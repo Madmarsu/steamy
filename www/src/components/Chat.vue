@@ -25,10 +25,10 @@
           </div>
         </div>
         <form @submit.prevent="submitMessage" class="row">
-          <div class="input-field col s10">
+          <div class="input-field col s11 m9">
             <input type="text" v-model="message" class="chatbox">
           </div>
-          <div class="input-field center col s2">
+          <div class="input-field center col s12 m2 submit-btn">
             <button type="submit" class="waves-effect waves-teal btn indigo" id="submit-button">SEND</button>
           </div>
         </form>
@@ -95,6 +95,10 @@
     padding-right: 1%;
     overflow: auto;
     color: white;
+  }
+
+  .submit-btn {
+    margin-bottom: 5%;
   }
   
   .chatbox {
