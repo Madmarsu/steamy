@@ -138,9 +138,13 @@ export default {
         path: '/profile/:id',
         reqType: 'get',
         method(req, res, next){
-            let action = 'Find another\'s profile'
+            let action = "Find another's profile"
             Users.findById(req.params.id)
                 .then(user => {
+                    if (user.blocked && user.blocked.includes(req.session.user.userId))
+                    {
+                        res.send(handleResponse(action, null, "You are not allowed to view this person's profile."))
+                    }
                     user.password = null;
                     res.send(handleResponse(action, user))
                 })
