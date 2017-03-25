@@ -22,7 +22,7 @@
                             <router-link to="sign-up">Sign Up</router-link>
                         </li>
                     </ul>
-                    <ul v-if="this.$root.$data.store.state.user._id" id="nav-mobile" class="right menu-padding">
+                    <ul v-show="this.$root.$data.store.state.user._id" id="nav-mobile" class="right menu-padding">
                         <li><a class="dropdown-button" data-constrainwidth="false" data-activates="dropdown1"><i class="fa fa-bars"></i></a></li>
                     </ul>
                 </div>
@@ -37,7 +37,7 @@
         methods: {
             logout(){
                 this.$root.$data.store.actions.logout();
-                this.$router.push({ path: '/' });
+                
             }
         },
         mounted(){
@@ -45,11 +45,14 @@
                 $(".dropdown-button").dropdown();
         },
         activated(){
-            //console.log("activated")
-            setTimeout(()=>{
-                $(".dropdown-button").dropdown();
-            }, 500)
-            
+            console.log("activated")
+            this.$nextTick(()=>{
+                console.log("Next tick")
+                setTimeout(()=>{
+                    $(".dropdown-button").dropdown();
+                }, 1000)
+                
+            })
         }
     }
 

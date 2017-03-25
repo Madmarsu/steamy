@@ -70,6 +70,7 @@ export default {
             })
                 .then(res => {
                     state.activeGroup = res.data.data;
+                    router.push({ path: '/group/' + state.activeGroup._id })
                 })
                 .catch(handleError);
         },
@@ -166,6 +167,9 @@ export default {
                 .then(res => {
                     if(res.data.data){
                         state.user = res.data.data;
+                        if (!state.user.steamId) {
+                            router.push("myprofile")
+                        }
                     } else {
                         state.error = res.data.error;
                         Materialize.toast(res.data.error, 1000);
@@ -192,6 +196,7 @@ export default {
                 .then(res => {
                     state.user = {};
                     Materialize.toast(res.data.message, 1000);
+                    router.push("Home")
                 })
                 .catch(handleError);
         },
@@ -220,6 +225,7 @@ export default {
             api('http://localhost:3000/steam/update')
                 .then(res => {
                     state.user.games = res.data.data;
+                    console.log(state.user.games)
                     Materialize.toast(res.data.msg, 1000);
                 })
                 .catch(handleError);

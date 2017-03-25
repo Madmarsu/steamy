@@ -1,10 +1,10 @@
 import axios from 'axios'
 import passport from "passport"
+import {
+    clientURL
+} from "../config/constants"
 let router = require('express').Router()
 let Users = require('../models/user')
-
-
-let steamKey = '7B9839E0AACE2FABC3E69561417B07C8'
 
 router.post('/register', (req, res) => {
   Users.create(req.body)
@@ -34,15 +34,17 @@ router.post('/login', (req, res) => {
           }
           console.log(user._id)
           req.session.uid = user._id;
+         
           req.session.steamId = user.steamId
+         
           req.session.save()
           console.log(req.session)
           user.password = null
           delete user.password
           res.send({
-            message: 'successfully logged in',
-            data: user
-          })
+              message: 'successfully logged in',
+              data: user
+            })
         })
         .catch(err => {
           res.send({ error: err || 'Invalid Username or Password' })

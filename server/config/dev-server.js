@@ -85,6 +85,8 @@ passport.use(new SteamStrategy({
 },
     function (req, identifier, profile, done) {
         console.log(profile);
+        req.session.steamId = profile.id
+        req.session.save()
         Users.findByIdAndUpdate(req.session.uid, { $set: { steamId: profile.id, avatar: profile._json.avatarfull } })
             .then(user => {
                 steamApi('GetOwnedGames/v0001/?key=' + steam.apiKey + '&steamid=' + profile.id + '&include_played_free_games=1&include_appinfo=1&format=json')
