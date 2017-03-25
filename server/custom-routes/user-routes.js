@@ -209,9 +209,6 @@ export default {
             let action = "Find another's profile"
             Users.findById(req.params.id)
                 .then(user => {
-<<<<<<< HEAD
-=======
->>>>>>> 6f87f5705e058b8950154f857df643448123debb
                     if (user.blocked.indexOf(req.session.uid) > -1)
                     {
                         res.send(handleResponse(action, {}, "You are not allowed to view this person's profile."))
