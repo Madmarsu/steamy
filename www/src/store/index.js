@@ -31,7 +31,8 @@ export default {
 
             api.put('/user/friends/' + profileId)
             .then(res => {
-                state.user = res.data.data
+                // state.user = res.data.data
+                this.checkLoggedIn()
                 Materialize.toast('Friend has been removed', 1000)
             })
             .catch(handleError)
