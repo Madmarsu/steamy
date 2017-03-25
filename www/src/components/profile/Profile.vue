@@ -7,6 +7,7 @@
           <div class="right-align">
             <a class="waves-effect waves-light btn indigo" @click="addFriend" v-if="!isFriend">Add Friend</a>
             <a class="waves-effect waves-light btn indigo" @click="createChat" v-if="isFriend">Send Message</a>
+            <a class="waves-effect waves-light btn indigo" @click="removeFriend" v-if="isFriend">Remove</a>
             <a class="waves-effect waves-light btn indigo" v-if="isFriend">Add to Group</a>
             <a class="waves-effect waves-light btn indigo" v-if="!isBlocked">Block</a>
             <a class="waves-effect waves-light btn indigo" v-if="isBlocked">Remove Block</a>
@@ -87,6 +88,9 @@
       this.$root.$data.store.actions.setActiveProfile(this.$route.params.id);
     },
     methods: {
+      removeFriend() {
+        this.$root.$data.store.actions.removeFriend(this.$route.params.id);
+      },
       addFriend() {
         this.$root.$data.store.actions.addFriend(this.$route.params.id);
       },

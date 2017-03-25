@@ -27,12 +27,14 @@ let handleError = (err) => {
 export default {
     state,
     actions: {
-        listenForMessage(){
-            socket.on('message', res =>{
-            console.log(res.data)
-            state.messages.push(res.data)
-            console.log('This is from your store', state.messages)
+        removeFriend(profileId){
+            
+            api.put('/user/friends/' + profileId)
+            .then(res => {
+                state.user = res.data.data
+                Materialize.toast('Friend has been removed', 1000)
             })
+            .catch(handleError)
         },
         createChat(profileId){
             api.post('/profile/' + profileId + '/chat')

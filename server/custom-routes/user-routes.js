@@ -41,16 +41,26 @@ export default {
             let action = 'Accept invite'
             Users.findById(req.session.uid)
                 .then(user => {
-                    user.friends.push(req.body.userId)
-                    let index = user.invites.indexOf(req.body)
-                    user.invites.splice(index, 1)
-                    user.save()
-                    Users.findById(req.body.userId)
-                        .then(friendUser => {
-                            friendUser.friends.push(req.session.uid)
-                            friendUser.save()
-                            res.send(handleResponse(action, user))
-                        })
+                    let exists;
+                    user.friends.forEach(friend => {
+                        if (friend == req.body.userId) {
+                            exists = true
+                        }
+                    })
+                    if (exists) {
+                        res.send(handleResponse(action, { message: 'You are already friends' }))
+                    } else {
+                        user.friends.push(req.body.userId)
+                        let index = user.invites.indexOf(req.body)
+                        user.invites.splice(index, 1)
+                        user.save()
+                        Users.findById(req.body.userId)
+                            .then(friendUser => {
+                                friendUser.friends.push(req.session.uid)
+                                friendUser.save()
+                                res.send(handleResponse(action, user))
+                            })
+                    }
                 })
                 .catch(error => {
                     return next(handleResponse(action, null, error))
@@ -74,6 +84,7 @@ export default {
                 })
         }
     },
+
     addToGroup: {
         path: '/profile/:id/groupadd',
         reqType: 'put',
@@ -118,6 +129,45 @@ export default {
                 .then(users => {
                     console.log(users);
                     res.send(handleResponse(action, users))
+                })
+                .catch(error => {
+                    return next(handleResponse(action, null, error))
+                })
+        }
+    },
+    deleteFriend: {
+        path: '/user/friends/:id',
+        reqType: 'put',
+        method(req, res, next) {
+            console.log('delete friend route')
+            let action = 'Remove friend'
+            Users.findById(req.params.id)
+                .then(firstUser => {
+                    console.log('this is what it is', firstUser.friends)
+                    let index = firstUser.friends.indexOf(req.session.uid)
+                    firstUser.friends.splice(index, 1)
+                    firstUser.save()
+                        .then(secondUser => {
+                            Users.findById(req.session.uid)
+                                .then(secondUser => {
+                                    console.log(secondUser)
+                                    let index = secondUser.friends.indexOf(req.params.id)
+                                    secondUser.friends.splice(index, 1)
+                                    secondUser.save()
+
+                                        .then(secondUser => {
+                                            Users.findById(req.session.uid).populate('friends groups')
+                                                .then(secondUser => {
+                                                    secondUser.password = null
+                                                    secondUser.friends.forEach(friend => {
+                                                        friend.password = null
+                                                    })
+                                                    res.send(handleResponse(action, secondUser))
+                                                })
+
+                                        })
+                                })
+                        })
                 })
                 .catch(error => {
                     return next(handleResponse(action, null, error))
