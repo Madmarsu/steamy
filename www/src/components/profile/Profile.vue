@@ -5,12 +5,12 @@
         <div class="card-content white-text">
           <h4 class="left-align">{{ activeProfile.username }}</h4>
           <div class="right-align">
-            <a class="waves-effect waves-light btn indigo" @click="addFriend" v-if="!isFriend">Add Friend</a>
-            <a class="waves-effect waves-light btn indigo" @click="createChat" v-if="isFriend">Send Message</a>
-            <a class="waves-effect waves-light btn indigo" @click="removeFriend" v-if="isFriend">Remove</a>
-            <a class="waves-effect waves-light btn indigo" v-if="isFriend">Add to Group</a>
-            <a class="waves-effect waves-light btn indigo" @click="block" v-if="!isBlocked">Block</a>
-            <a class="waves-effect waves-light btn indigo" @click="unblock" v-if="isBlocked">Remove Block</a>
+            <a class="waves-effect waves-light btn indigo top-bot-marg" @click="addFriend" v-if="!isFriend">Add Friend</a>
+            <a class="waves-effect waves-light btn indigo top-bot-marg" @click="createChat" v-if="isFriend">Send Message</a>
+            <a class="waves-effect waves-light btn indigo top-bot-marg" @click="removeFriend" v-if="isFriend">Remove</a>
+            <a class="waves-effect waves-light btn indigo top-bot-marg" v-if="isFriend">Add to Group</a>
+            <a class="waves-effect waves-light btn indigo top-bot-marg" @click="block" v-if="!isBlocked">Block</a>
+            <a class="waves-effect waves-light btn indigo top-bot-marg" @click="unblock" v-if="isBlocked">Remove Block</a>
           </div>
         </div>
       </div>
@@ -18,7 +18,7 @@
     <div class="card blue-grey">
       <div class="card-content white-text">
         <div class="row">
-          <div class="col s6">
+          <div class="col s12 m6">
             <div>
               <img v-if="activeProfile.steamId" :src="activeProfile.avatar" class="avatar">
               <img v-if="!activeProfile.steamId" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=200%C3%97200&w=200&h=200" class="avatar">
@@ -27,7 +27,7 @@
               {{ activeProfile.bio }}
             </div>
           </div>
-          <div class="col s6">
+          <div class="col s12 m6">
             <h5>{{ activeProfile.username }}'s Games</h5>
             <div class="scrollable">
               <ul>
@@ -43,10 +43,10 @@
         </div>
       </div>
     </div>
-    <div class="col s6">
+    <!--<div class="col s6">
       <div class="row">
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -139,6 +139,11 @@
     height: 200px;
     border-radius: 5%;
     margin: 10px;
+  }
+
+  .top-bot-marg {
+    margin-top: 2%;
+    margin-bottom: 2%;
   }
   
   .flex-container {
