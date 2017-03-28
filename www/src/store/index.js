@@ -260,7 +260,7 @@ export default {
     updateGames() {
       api('http://localhost:3000/steam/update')
         .then(res => {
-          state.user.games = res.data.data;
+          state.user.games = res.data.data.sort();
           console.log(state.user.games)
           Materialize.toast(res.data.msg, 1000);
         })

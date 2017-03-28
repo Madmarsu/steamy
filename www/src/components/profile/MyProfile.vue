@@ -42,7 +42,7 @@
                     <li v-for="game in user.games">
                       <div class="flex-container">
                         <img :src="'http://media.steampowered.com/steamcommunity/public/images/apps/' + game.appid + '/' + game.img_icon_url + '.jpg'">
-                        <span class="game-title">{{ game.name }}</span>
+                        <router-link class="page-link" :to="{ path: 'search', query: { game: game.name }}"><span class="game-title">{{ game.name }}</span></router-link>
                       </div>
                     </li>
                   </ul>

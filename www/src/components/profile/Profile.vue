@@ -28,8 +28,8 @@
         <div class="row">
           <div class="col s12 m6">
             <div>
-              <img v-if="activeProfile.steamId" :src="activeProfile.avatar" class="avatar">
-              <img v-if="!activeProfile.steamId" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=200%C3%97200&w=200&h=200" class="avatar">
+              <img v-if="activeProfile.avatar" :src="activeProfile.avatar" class="avatar">
+              <img v-if="!activeProfile.avatar" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=200%C3%97200&w=200&h=200" class="avatar">
             </div>
             <div>
               {{ activeProfile.bio }}

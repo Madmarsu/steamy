@@ -97,6 +97,12 @@
             //     this.$router.push({ path: '/myprofile' })
             //     Materialize.toast('Please link your Steam account.', 1000);
             // }
+            console.log(this.$route.query.game)
+            if (this.$route.query.game){
+                 this.$root.$data.store.actions.searchGroups(this.$route.query.game);
+                 var selectedGame = document.getElementById('selectedGame');
+                 selectedGame.value = this.$route.query.game
+            }
         },
         methods: {
             search() {
@@ -120,7 +126,8 @@
                     vue.$router.push({ path: '/group/' + group._id });
                 }, 500);
             }
-        }
+        },
+        props: ['searchGame'],
     }
 
 </script>
