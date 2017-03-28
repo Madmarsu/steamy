@@ -217,7 +217,7 @@ export default {
         reqType: 'get',
         method(req, res, next) {
             let action = "Find another's profile"
-            Users.findById(req.params.id, '_id username games avatar steamId blocked friends')
+            Users.findById(req.params.id, '_id username games bio avatar steamId blocked friends')
                 .then(user => {
                     if (user.blocked.indexOf(req.session.uid) > -1) {
                         let puser = {
@@ -238,6 +238,7 @@ export default {
 
                      if (user.friends.indexOf(req.session.uid) > -1) {
                         ruser.steamId = user.steamId
+                        ruser.bio = user.bio
                     }
                     res.send(handleResponse(action, ruser))
                 })
