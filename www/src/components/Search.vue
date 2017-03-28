@@ -1,9 +1,13 @@
 <template>
     <div class="container">
         <div class="card blue-grey">
-            <form @submit.prevent="search">
-                <div class="card-content white-text">
-                    <h4 class="center">Search</h4>
+            <div class="card-content white-text">
+                <h4 class="center">Search</h4>
+                <ul class="pagination right-align">
+                    <li :class="{ active: showGames, 'waves-effect': showUsername }"><a @click="activateGames">Search by Game</a></li>
+                    <li :class="{ active: showUsername, 'waves-effect': showGames }"><a @click="activateUsername">Search by Username</a></li>
+                </ul>
+                <form v-show="showGames" @submit.prevent="search">
                     <div class="input-field">
                         <select id="selectedGame">
                             <option v-for="game in this.$root.$data.store.state.user.games" :value="game.name">{{ game.name }}</option>
@@ -20,8 +24,17 @@
                     <div class="input-field center">
                         <button class="waves-effect waves-teal btn indigo" type="submit">Search</button>
                     </div>
-                </div>
-            </form>
+                </form>
+                <form v-show="showUsername" @submit.prevent="searchByUsername">
+                    <div class="input-field">
+                        <input id="username" type="text" v-model="username">
+                        <label for="username">Username</label>
+                    </div>
+                    <div class="input-field center">
+                        <button class="waves-effect waves-teal btn indigo" type="submit">Search</button>
+                    </div>
+                </form>
+            </div>
         </div>
 
         <div v-if="userResults[0]" class="card blue-grey">
@@ -76,8 +89,11 @@
         name: 'search',
         data() {
             return {
+                username: '',
                 title: '',
-                description: ''
+                description: '',
+                showGames: true,
+                showUsername: false
             }
         },
         computed: {
@@ -119,6 +135,22 @@
                 setTimeout(function () {
                     vue.$router.push({ path: '/group/' + group._id });
                 }, 500);
+            },
+            activateGames() {
+                this.showGames = true
+                this.showUsername = false
+            },
+            activateUsername() {
+                this.showUsername = true
+                this.showGames = false
+            },
+            searchByUsername() {
+                if (this.username == '') {
+                    Materialize.toast('Please enter a username!', 1000)
+                } else {
+                    this.$root.$data.store.actions.searchByUsername(this.username)
+                }
+                
             }
         }
     }
@@ -126,6 +158,10 @@
 </script>
 
 <style>
+    .pagination li.active {
+        background: #283593;
+    }
+    
     .avatar {
         width: 50px;
         height: 50px;

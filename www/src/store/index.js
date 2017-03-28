@@ -4,39 +4,39 @@ import io from 'socket.io-client'
 
 let socket = io('http://localhost:3000')
 let api = axios.create({
-    baseURL: 'http://localhost:3000/api/',
-    timeout: 5000,
-    withCredentials: true
+  baseURL: 'http://localhost:3000/api/',
+  timeout: 5000,
+  withCredentials: true
 })
 
 let state = {
-    user: {},
-    error: {},
-    userResults: [],
-    groupResults: [],
-    activeProfile: {},
-    activeGroup: {},
-    activeChat: {}
+  user: {},
+  error: {},
+  userResults: [],
+  groupResults: [],
+  activeProfile: {},
+  activeGroup: {},
+  activeChat: {}
 }
 
 let handleError = (err) => {
-    state.error = err
-    console.log(err);
+  state.error = err
+  console.log(err);
 }
 
 export default {
   state,
   actions: {
-      removeFriend(profileId){
+    removeFriend(profileId) {
 
-            api.put('/user/friends/' + profileId)
-            .then(res => {
-                // state.user = res.data.data
-                this.checkLoggedIn()
-                Materialize.toast('Friend has been removed', 1000)
-            })
-            .catch(handleError)
-        },
+      api.put('/user/friends/' + profileId)
+        .then(res => {
+          // state.user = res.data.data
+          this.checkLoggedIn()
+          Materialize.toast('Friend has been removed', 1000)
+        })
+        .catch(handleError)
+    },
     listenForMessage() {
       socket.on('message', res => {
         console.log(res.data)
@@ -64,7 +64,7 @@ export default {
     setActiveChat(chatId) {
       api('/chat/' + chatId)
         .then(res => {
-          
+
           state.activeChat = res.data.data;
         })
     },
@@ -77,10 +77,10 @@ export default {
     },
     createGroup(selectedGame, title, description) {
       api.post('group/create', {
-          title: title,
-          game: selectedGame,
-          description: description
-        })
+        title: title,
+        game: selectedGame,
+        description: description
+      })
         .then(res => {
           state.activeGroup = res.data.data;
           router.push({
@@ -92,18 +92,18 @@ export default {
     setActiveGroup(groupId) {
       api('group/' + groupId)
         .then(res => {
-           console.log(res.data.data);
+          console.log(res.data.data);
           state.activeGroup = res.data.data;
         })
         .catch(handleError);
     },
-    addToGroup(groupId, profileId){
+    addToGroup(groupId, profileId) {
       api.put('profile/' + profileId + '/groupadd', {
         groupId: groupId
-      }) 
+      })
         .then(res => {
           console.log(res.data.data);
-          if(res.data.data._id){
+          if (res.data.data._id) {
             Materialize.toast('Added to group', 1000);
           } else {
             Materialize.toast(res.data.data.message, 1000);
@@ -126,8 +126,8 @@ export default {
     },
     searchGroups(selectedGame) {
       api.post('group/findbygame', {
-          game: selectedGame
-        })
+        game: selectedGame
+      })
         .then(res => {
           console.log(res.data.data);
           state.userResults = [];
@@ -138,8 +138,8 @@ export default {
     searchIndividual(selectedGame) {
       console.log('hit the individual');
       api.post('find/individual', {
-          game: selectedGame
-        })
+        game: selectedGame
+      })
         .then(res => {
           let users = res.data.data.forEach(user => {
             user.password = null;
@@ -154,9 +154,9 @@ export default {
     },
     addFriend(profileId) {
       api.put('profile/' + profileId + '/invite', {
-          username: state.user.username,
-          userId: state.user._id
-        })
+        username: state.user.username,
+        userId: state.user._id
+      })
         .then(res => {
           Materialize.toast(res.data.data.message, 1000);
         })
@@ -175,13 +175,13 @@ export default {
     },
     setActiveProfile(profileId) {
       api('profile/' + profileId)
-          .then(res => {
-            if (res.data.error) {
-                Materialize.toast(res.data.error, 5000, "errorToast");
-                
-            }
-            state.activeProfile = res.data.data;
-          console.log("activeProfile", state.activeProfile)  
+        .then(res => {
+          if (res.data.error) {
+            Materialize.toast(res.data.error, 5000, "errorToast");
+
+          }
+          state.activeProfile = res.data.data;
+          console.log("activeProfile", state.activeProfile)
         })
         .catch(handleError);
     },
@@ -195,12 +195,12 @@ export default {
     },
     login(username, userPass) {
       api.post('http://localhost:3000/login', {
-          username: username,
-          password: userPass
-        })
+        username: username,
+        password: userPass
+      })
         .then(res => {
           if (res.data.data) {
-              state.user = res.data.data;
+            state.user = res.data.data;
             console.log(state.user)
             if (!state.user.steamId) {
               router.push("myprofile")
@@ -214,13 +214,13 @@ export default {
     },
     register(username, password) {
       api.post('http://localhost:3000/register', {
-          username: username,
-          password: password
-        })
+        username: username,
+        password: password
+      })
         .then(res => {
           if (res.data.data) {
             state.user = res.data.data;
-            router.push({path: '/myprofile'})
+            router.push({ path: '/myprofile' })
           } else {
             Materialize.toast('That username is already taken.', 2000, "errorToast");
           }
@@ -232,7 +232,7 @@ export default {
         .then(res => {
           state.user = {};
           Materialize.toast(res.data.message, 1000);
-          router.push({path: "/"})
+          router.push({ path: "/" })
         })
         .catch(handleError);
     },
@@ -267,29 +267,35 @@ export default {
         .catch(handleError);
     },
     blockUser(id) {
-      api('profile/'+id+'/block')
-          .then(res => {
-            if (res.data.error) {
-                Materialize.toast(res.data.error, 1000, "errorToast");
-                return
-            }
-            state.user.blocked = res.data.data;
+      api('profile/' + id + '/block')
+        .then(res => {
+          if (res.data.error) {
+            Materialize.toast(res.data.error, 1000, "errorToast");
+            return
+          }
+          state.user.blocked = res.data.data;
           console.log(state.user.blocked)
           Materialize.toast(res.data.msg, 1000);
         })
         .catch(handleError);
     },
     unBlockUser(id) {
-      api('profile/'+id+'/unblock')
-          .then(res => {
-             if (res.data.error) {
-                Materialize.toast(res.data.error, 1000, "errorToast");
-                return
-            }
+      api('profile/' + id + '/unblock')
+        .then(res => {
+          if (res.data.error) {
+            Materialize.toast(res.data.error, 1000, "errorToast");
+            return
+          }
           state.user.blocked = res.data.data;
           Materialize.toast(res.data.msg, 1000);
         })
         .catch(handleError);
+    },
+    searchByUsername(username) {
+      api.post('find/byusername', { username: username }).then(res => {
+        state.groupResults = [];
+        state.userResults = res.data.data;
+      }).catch(handleError);
     }
-}
+  }
 }

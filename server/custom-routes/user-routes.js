@@ -135,7 +135,22 @@ export default {
         reqType: 'post',
         method(req, res, next) {
             let action = 'Find individual by game'
-            Users.find({ games: { $elemMatch: { name: req.body.game } } }, '_id username avatar')
+            Users.find({ games: { $elemMatch: { name: req.body.game } } }, '_id username avatar bio')
+                .then(users => {
+                    console.log(users);
+                    res.send(handleResponse(action, users))
+                })
+                .catch(error => {
+                    return next(handleResponse(action, null, error))
+                })
+        }
+    },
+    findUserByUsername: {
+        path: '/find/byusername',
+        reqType: 'post',
+        method(req, res, next) {
+            let action = 'Find individual by username'
+            Users.find({ username: { "$regex": req.body.username, "$options": "i" } }, '_id username avatar bio')
                 .then(users => {
                     console.log(users);
                     res.send(handleResponse(action, users))
@@ -217,7 +232,7 @@ export default {
         reqType: 'get',
         method(req, res, next) {
             let action = "Find another's profile"
-            Users.findById(req.params.id, '_id username games avatar steamId blocked friends')
+            Users.findById(req.params.id, '_id username games avatar steamId bio blocked friends')
                 .then(user => {
                     if (user.blocked.indexOf(req.session.uid) > -1) {
                         let puser = {
@@ -233,7 +248,8 @@ export default {
                          _id: user._id,
                         username: user.username,
                         avatar: user.avatar,
-                        games: user.games
+                        games: user.games,
+                        bio: user.bio
                     }
 
                      if (user.friends.indexOf(req.session.uid) > -1) {
