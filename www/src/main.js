@@ -6,7 +6,7 @@ import router from './router'
 import store from './store'
 import VueSocketio from 'vue-socket.io'
 
-Vue.use(VueSocketio, ':3000')
+Vue.use(VueSocketio, 'https://multi-player.herokuapp.com')
 
 Vue.config.productionTip = false
 

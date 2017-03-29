@@ -2,9 +2,9 @@ import axios from 'axios'
 import router from '../router'
 import io from 'socket.io-client'
 
-let socket = io('http://localhost:3000')
+let socket = io('https://multi-player.herokuapp.com')
 let api = axios.create({
-  baseURL: 'http://localhost:3000/api/',
+  baseURL: 'https://multi-player.herokuapp.com/api/',
   timeout: 5000,
   withCredentials: true
 })
@@ -204,7 +204,7 @@ export default {
         .catch(handleError);
     },
     login(username, userPass) {
-      api.post('http://localhost:3000/login', {
+      api.post('https://multi-player.herokuapp.com/login', {
         username: username,
         password: userPass
       })
@@ -223,7 +223,7 @@ export default {
         .catch(handleError)
     },
     register(username, password) {
-      api.post('http://localhost:3000/register', {
+      api.post('https://multi-player.herokuapp.com/register', {
         username: username,
         password: password
       })
@@ -238,7 +238,7 @@ export default {
         .catch(handleError)
     },
     logout() {
-      api.delete('http://localhost:3000/logout')
+      api.delete('https://multi-player.herokuapp.com/logout')
         .then(res => {
           state.user = {};
           Materialize.toast(res.data.message, 1000);
@@ -247,7 +247,7 @@ export default {
         .catch(handleError);
     },
     checkLoggedIn() {
-      api('http://localhost:3000/check-logged-in')
+      api('https://multi-player.herokuapp.com/check-logged-in')
         .then(res => {
           if (res.data.message) {
             console.log('You are not logged in');
@@ -260,7 +260,7 @@ export default {
         })
     },
     linkSteam() {
-      window.location.href = 'http://localhost:3000/steam/auth';
+      window.location.href = 'https://multi-player.herokuapp.com/steam/auth';
       // api('http://localhost:3000/steam/auth')
       //     .then(res => {
       //         console.log(res);
@@ -268,7 +268,7 @@ export default {
       //     })
     },
     updateGames() {
-      api('http://localhost:3000/steam/update')
+      api('https://multi-player.herokuapp.com/steam/update')
         .then(res => {
           state.user.games = res.data.data;
           console.log(state.user.games)

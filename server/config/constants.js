@@ -34,7 +34,7 @@ const steam = {
   realm: 'http://localhost:3000/'
 }
 
-const clientURL = "http://localhost:8080/"
+const clientURL = "https://jaime-lynn.github.io/multi-player/"
 
 export  {
   actions,
