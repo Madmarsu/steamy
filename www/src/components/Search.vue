@@ -3,9 +3,10 @@
         <div class="card blue-grey">
             <div class="card-content white-text">
                 <h4 class="center">Search</h4>
-                <ul class="pagination right-align">
-                    <li :class="{ active: showGames, 'waves-effect': showUsername }"><a @click="activateGames">Search by Game</a></li>
-                    <li :class="{ active: showUsername, 'waves-effect': showGames }"><a @click="activateUsername">Search by Username</a></li>
+                <ul class="pagination">
+                    <li :class="{ active: showGames, 'waves-effect': showUsername || showGroup }"><a @click="activateGames">Search by Game</a></li>
+                    <li :class="{ active: showUsername, 'waves-effect': showGames || showGroup }"><a @click="activateUsername">Search by Username</a></li>
+                    <li :class="{ active: showGroup, 'waves-effect': showGames || showUsername }"><a @click="activateGroup">Search by Group Title</a></li>
                 </ul>
                 <form v-show="showGames" @submit.prevent="search">
                     <div class="input-field">
@@ -29,6 +30,15 @@
                     <div class="input-field">
                         <input id="username" type="text" v-model="username">
                         <label for="username">Username</label>
+                    </div>
+                    <div class="input-field center">
+                        <button class="waves-effect waves-teal btn indigo" type="submit">Search</button>
+                    </div>
+                </form>
+                <form v-show="showGroup" @submit.prevent="searchByGroupTitle">
+                    <div class="input-field">
+                        <input id="grouptitle" type="text" v-model="groupTitle">
+                        <label for="gouptitle">Group Title</label>
                     </div>
                     <div class="input-field center">
                         <button class="waves-effect waves-teal btn indigo" type="submit">Search</button>
@@ -93,7 +103,9 @@
                 title: '',
                 description: '',
                 showGames: true,
-                showUsername: false
+                showUsername: false,
+                showGroup: false,
+                groupTitle: ''
             }
         },
         computed: {
@@ -139,9 +151,16 @@
             activateGames() {
                 this.showGames = true
                 this.showUsername = false
+                this.showGroup = false
             },
             activateUsername() {
                 this.showUsername = true
+                this.showGames = false
+                this.showGroup = false
+            },
+            activateGroup() {
+                this.showGroup = true
+                this.showUsername = false
                 this.showGames = false
             },
             searchByUsername() {
@@ -150,7 +169,13 @@
                 } else {
                     this.$root.$data.store.actions.searchByUsername(this.username)
                 }
-                
+            },
+            searchByGroupTitle(){
+                if(this.groupTitle == ''){
+                    Materialize.toast('Please enter a group title to search!', 1000);
+                } else {
+                    this.$root.$data.store.actions.searchByGroupTitle(this.groupTitle);
+                }
             }
         }
     }
@@ -160,6 +185,11 @@
 <style>
     .pagination li.active {
         background: #283593;
+    }
+    
+    .pagination li a {
+        color: white;
+        font-size: 14px;
     }
     
     .avatar {

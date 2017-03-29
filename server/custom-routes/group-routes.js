@@ -106,7 +106,7 @@ export default {
         reqType: 'post',
         method(req, res, next) {
             let action = 'Find groups by title'
-            Groups.find({ title: req.body.title })
+            Groups.find({ title: { "$regex": req.body.title, "$options": "i" } })
                 .then(groups => {
                     let sortedGroups = groups.sort(function (a, b) {
                         return b.members.length - a.members.length

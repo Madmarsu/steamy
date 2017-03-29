@@ -137,29 +137,4 @@ app.use(Steam)
 app.use('/api', api)
 app.use('/', defaultErrorHandler)
 
-// USING SOCKETS
-// let io = require('socket.io')(server, {
-//     origins: '*:*'
-// })
-
-// io.on('connection', function (socket) {
-//     socket.emit('CONNECTED', {
-//         socket: socket.id,
-//         message: 'Welcome to the Jungle'
-//     })
-
-//     socket.on('update', function (data) {
-//         console.log(data)
-//     })
-
-    // socket.join('Kanban', function(){
-    //     io.to('Kanban').emit('message', 'A new user has joined the channel.');
-    // });
-    // socket.on('message', function(data){
-    //     // if(data.text){
-    //         // data.text = data.text.replace(/[<>]/g, '');
-    //     io.to('Kanban').emit('message', data);
-    // });
-// });
-
 export default server

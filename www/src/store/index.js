@@ -135,6 +135,16 @@ export default {
         })
         .catch(handleError);
     },
+    searchByGroupTitle(groupTitle){
+      api.post('group/findbytitle', {
+        title: groupTitle
+      })
+        .then(res => {
+          state.userResults = [];
+          state.groupResults = res.data.data
+        })
+        .catch(handleError);
+    },
     searchIndividual(selectedGame) {
       console.log('hit the individual');
       api.post('find/individual', {
